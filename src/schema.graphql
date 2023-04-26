@@ -1,0 +1,167 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Auth {
+  token: String!
+  id: Int!
+  name: String
+  email: String!
+  password: String!
+  contact: String
+  companyId: Int
+  address: String
+  profession: String
+  role: Role!
+  status: Status!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+}
+
+enum Role {
+  ADMIN
+  USER
+  COMPANY
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Principle {
+  id: Int!
+  name: String!
+  description: String!
+  status: Status!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  QuestionBank: [QuestionBank!]!
+}
+
+type QuestionAns {
+  answer: String!
+  mark: Int!
+  rec: String!
+}
+
+type QuestionBank {
+  id: Int!
+  questionType: QuestionType!
+  questionPlan: LicenseType!
+  status: Status!
+  question: String!
+  answer: [QuestionAns!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  principle: Principle!
+}
+
+enum QuestionType {
+  MCQ
+  SLIDER
+  TANDF
+  PERCENTAGE
+}
+
+enum LicenseType {
+  FREE
+  BUSINESS
+  PREMIUM
+  PLATINUM
+}
+
+type User {
+  id: Int!
+  name: String
+  email: String
+  contact: String
+  address: String
+  profession: String
+  role: Role!
+  status: Status!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+}
+
+type Company {
+  id: Int!
+  name: String
+  logo: String
+  website: String
+  email: String
+  ctoContact: String
+  description: String
+  address: String
+  role: Role!
+  status: Status!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+}
+
+type Project {
+  id: Int!
+  name: String!
+  description: String!
+  status: Status!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+}
+
+type License {
+  id: Int!
+  licenseType: LicenseType!
+  paymentAmount: Int!
+  discountAmount: String!
+  questionAllowed: Int!
+  projectPerLicense: Int
+  discountValidTill: DateTime
+  status: Status!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+}
+
+type Query {
+  index: String!
+  signin(loginUserInput: LoginUserInput!): Auth!
+  signout: String!
+  getdata: String!
+  getAllQuestion: [QuestionBank!]!
+  getAllQuestionById(id: Int!): QuestionBank!
+  getPrinciple: [Principle!]!
+  getPrincipleById(id: Int!): Principle!
+  getAllUser: [User!]!
+  getUserById(id: Int!): User!
+  getAllCompany: [Company!]!
+  getCompanyById(id: Int!): Company!
+  getAllProject: [Project!]!
+  getAllProjectById(id: Int!): Project!
+  getAllLicense: [License!]!
+  getAllLicenseById(id: Int!): License!
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  signup(signUpUserInput: SignUpUserInput!): Auth!
+}
+
+input SignUpUserInput {
+  email: String!
+  password: String!
+}

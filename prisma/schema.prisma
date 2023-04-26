@@ -1,0 +1,199 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+}
+
+enum QuestionType {
+  MCQ
+  SLIDER
+  TANDF
+  PERCENTAGE
+}
+
+enum QuestionPlan {
+  FREE
+  PAID
+  BOTH
+}
+
+enum LicenseType {
+  FREE
+  BUSINESS
+  PREMIUM
+  PLATINUM
+}
+
+enum Role {
+  ADMIN
+  USER
+  COMPANY
+}
+
+enum Result {
+  MET
+  NOTMET
+  REVIEW
+}
+
+model Principle {
+  id           Int            @id @default(autoincrement())
+  name         String         @unique
+  description  String
+  status       Status         @default(ACTIVE)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  deletedAt    DateTime?
+  QuestionBank QuestionBank[]
+}
+
+model QuestionBank {
+  id           Int          @id @default(autoincrement())
+  principle    Principle    @relation(fields: [principleId], references: [id])
+  principleId  Int
+  questionType QuestionType @default(TANDF)
+  questionPlan LicenseType @default(FREE)
+  question     String
+  answer       Json
+  status       Status       @default(ACTIVE)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  deletedAt    DateTime?
+}
+
+model UserLicensesMaster {
+  id                Int                @id @default(autoincrement())
+  licenseType       LicenseType        @default(FREE)
+  paymentAmount     Int                @default(0)
+  discountAmount    Int                @default(0)
+  discountValidTill DateTime?
+  questionAllowed   Int                @default(0)
+  projectPerLicense String?
+  status            Status             @default(ACTIVE)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  deletedAt         DateTime?
+  UserLicenseslave  UserLicenseslave[]
+}
+
+model UserLicenseslave {
+  id                   Int                @id @default(autoincrement())
+  licenseType          UserLicensesMaster @relation(fields: [licenseTypeId], references: [id])
+  licenseTypeId        Int
+  paymentStatus        Status             @default(INACTIVE)
+  licenseValidity      DateTime
+  user                 User               @relation(fields: [userId], references: [id])
+  userId               Int
+  paymentReference     String
+  paymentAmount        Int                @default(0)
+  status               Status             @default(ACTIVE)
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+  deletedAt            DateTime?
+  assesementresult     assesementresult[]
+}
+
+model User {
+  id               Int                @id @default(autoincrement())
+  name             String?
+  email            String             @unique
+  password         String
+  contact          String?            @unique
+  company          Company?           @relation(fields: [companyId], references: [id])
+  companyId        Int?
+  address          String?
+  profession       String?
+  role             Role               @default(USER)
+  status           Status             @default(ACTIVE)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  deletedAt        DateTime?
+  UserLicenseslave UserLicenseslave[]
+  assesementresult assesementresult[]
+  Project          Project[]
+}
+
+model Company {
+  id          Int       @id @default(autoincrement())
+  name        String
+  logo        String
+  website     String
+  email       String    @unique
+  ctoContact  String
+  description String
+  address     String
+  role        Role      @default(USER)
+  status      Status    @default(ACTIVE)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  User        User[]
+}
+
+model Project {
+  id               Int                @id @default(autoincrement())
+  name             String
+  description      String
+  createdUser      User               @relation(fields: [createdUserId], references: [id])
+  createdUserId    Int
+  status           Status             @default(ACTIVE)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  deletedAt        DateTime?
+  assesementresult assesementresult[]
+}
+
+model assesementresult {
+  id                      Int                       @id @default(autoincrement())
+  user                    User                      @relation(fields: [userId], references: [id])
+  userId                  Int
+  project                 Project                   @relation(fields: [projectId], references: [id])
+  projectId               Int
+  license                 UserLicenseslave          @relation(fields: [licenseId], references: [id])
+  licenseId               Int
+  attemptNo               Int
+  totalScore              Int
+  resultStatus            Result                    @default(REVIEW)
+  certified               Status                    @default(INACTIVE)
+  certificatedId          Int
+  certificatePrivacy      Status                    @default(INACTIVE)
+  adminComments           String?
+  status                  Status                    @default(ACTIVE)
+  createdAt               DateTime                  @default(now())
+  updatedAt               DateTime                  @updatedAt
+  deletedAt               DateTime?
+  assesementResultRevised assesementResultRevised[]
+}
+
+model assesementResultRevised {
+  id          Int              @id @default(autoincrement())
+  result      Json
+  assesment   assesementresult @relation(fields: [assesmentId], references: [id])
+  assesmentId Int
+  status      Status           @default(ACTIVE)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  deletedAt   DateTime?
+}
+
+model compliance {
+  id            Int       @id @default(autoincrement())
+  name          String
+  description   String
+  LearnMoreLink String
+  status        Status    @default(ACTIVE)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+}
