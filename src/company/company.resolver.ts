@@ -17,4 +17,9 @@ export class CompanyResolver {
   getCompanyById(@Args('id', { type: () => Int }) id: number) {
     return this.companyService.getCompanyById(id);
   }
+
+  @Mutation(() => Company)
+  updateCompanyById(@Args('updateCompanyInput') updateCompanyInput: UpdateCompanyInput) {
+    return this.companyService.updateCompanyById(updateCompanyInput.id, updateCompanyInput);
+  }
 }

@@ -1,10 +1,10 @@
 import { IsNotEmpty, IsOptional } from 'class-validator';
-import { CreatePrincipleInput } from './create-principle.input';
+import { CreateComplianceInput } from './create-compliance.input';
 import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
 import { Status } from '@prisma/client';
 
 @InputType()
-export class UpdatePrincipleInput extends PartialType(CreatePrincipleInput) {
+export class UpdateComplianceInput extends PartialType(CreateComplianceInput) {
   @IsNotEmpty()
   @Field(() => Int)
   id: number;
@@ -16,6 +16,10 @@ export class UpdatePrincipleInput extends PartialType(CreatePrincipleInput) {
   @IsOptional()
   @Field(() => String, { nullable: true })
   description: string;
+
+  @IsOptional()
+  @Field(() => String, { nullable: true })
+  LearnMoreLink: string;
 
   @IsOptional()
   @Field(() => Status, { nullable: true })

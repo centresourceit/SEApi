@@ -21,4 +21,9 @@ export class QuestionbankResolver {
   getAllQuestionById(@Args('id', { type: () => Int }) id: number) {
     return this.questionbankService.getAllQuestionById(id);
   }
+
+  @Mutation(() => QuestionBank)
+  updateQuestionById(@Args('updateQuestionbankInput') updateQuestionbankInput: UpdateQuestionbankInput) {
+    return this.questionbankService.updateQuestionById(updateQuestionbankInput.id, updateQuestionbankInput);
+  }
 }

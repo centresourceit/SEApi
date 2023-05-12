@@ -40,6 +40,9 @@ export class QuestionBank {
   @Field(() => String)
   question: string;
 
+  @Field(() => String, { nullable: true })
+  description: string;
+
   @Field(() => [QuestionAns])
   answer: [QuestionAns];
 

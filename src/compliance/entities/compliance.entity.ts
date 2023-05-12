@@ -1,9 +1,8 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Status } from '@prisma/client';
-import { QuestionAns, QuestionBank } from 'src/questionbank/entities/questionbank.entity';
 
 @ObjectType()
-export class Principle {
+export class Compliance {
   @Field(() => Int)
   id: number;
 
@@ -12,6 +11,9 @@ export class Principle {
 
   @Field(() => String)
   description: string;
+
+  @Field(() => String)
+  LearnMoreLink: string;
 
   @Field(() => Status)
   status: Status;
@@ -24,7 +26,4 @@ export class Principle {
 
   @Field(() => Date, { nullable: true })
   deletedAt: Date;
-
-  @Field(() => [QuestionBank])
-  question_bank: [QuestionBank];
 }

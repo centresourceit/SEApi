@@ -18,4 +18,10 @@ export class LicenseResolver {
   getAllLicenseById(@Args('id', { type: () => Int }) id: number) {
     return this.licenseService.getAllLicenseById(id);
   }
+  
+  @Mutation(() => License)
+  updateLicenseById(@Args('updateLicenseInput') updateLicenseInput: UpdateLicenseInput) {
+    return this.licenseService.updateLicenseById(updateLicenseInput.id, updateLicenseInput);
+  }
+
 }

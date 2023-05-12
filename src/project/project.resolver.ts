@@ -20,4 +20,9 @@ export class ProjectResolver {
   getAllProjectById(@Args('id', { type: () => Int }) id: number) {
     return this.projectService.getAllProjectById(id);
   }
+
+  @Mutation(() => Project)
+  updateProjectById(@Args('updateProjectInput') updateProjectInput: UpdateProjectInput) {
+    return this.projectService.updateProjectById(updateProjectInput.id, updateProjectInput);
+  }
 }

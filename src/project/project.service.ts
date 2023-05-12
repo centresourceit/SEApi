@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateProjectInput } from './dto/create-project.input';
 import { UpdateProjectInput } from './dto/update-project.input';
 import { PrismaService } from 'prisma/prisma.service';
@@ -21,5 +25,34 @@ export class ProjectService {
     if (!project)
       throw new BadRequestException('No project exist with this id.');
     return project;
+  }
+
+  async updateProjectById(id: number, user: UpdateProjectInput) {
+    const dataToUpdate: {
+      [key: string]: any;
+    } = {};
+
+    for (const [key, value] of Object.entries(user)) {
+      if (value) {
+        dataToUpdate[key] = value;
+      }
+    }
+
+    const existing = await this.prisma.project.findUnique({
+      where: { id: id },
+    });
+
+    if (!existing) {
+      throw new NotFoundException(`Project with id ${id} not found`);
+    }
+
+    const updatedproject = this.prisma.project.update({
+      where: { id: id },
+      data: dataToUpdate,
+    });
+
+    if (!updatedproject)
+      throw new BadRequestException('Unable to update project.');
+    return updatedproject;
   }
 }

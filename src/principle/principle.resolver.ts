@@ -20,4 +20,9 @@ export class PrincipleResolver {
   getPrincipleById(@Args('id', { type: () => Int }) id: number) {
     return this.principleService.getPrincipleById(id);
   }
+
+  @Mutation(() => Principle)
+  updatePrincipleById(@Args('updatePrincipleInput') updatePrincipleInput: UpdatePrincipleInput) {
+    return this.principleService.updatePrincipleById(updatePrincipleInput.id, updatePrincipleInput);
+  }
 }

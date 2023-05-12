@@ -47,24 +47,25 @@ enum Result {
   REVIEW
 }
 
-model Principle {
-  id           Int            @id @default(autoincrement())
-  name         String         @unique
-  description  String
-  status       Status         @default(ACTIVE)
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  deletedAt    DateTime?
-  QuestionBank QuestionBank[]
+model principle {
+  id            Int             @id @default(autoincrement())
+  name          String          @unique
+  description   String
+  status        Status          @default(ACTIVE)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  deletedAt     DateTime?
+  question_bank question_bank[]
 }
 
-model QuestionBank {
+model question_bank {
   id           Int          @id @default(autoincrement())
-  principle    Principle    @relation(fields: [principleId], references: [id])
+  principle    principle    @relation(fields: [principleId], references: [id])
   principleId  Int
   questionType QuestionType @default(TANDF)
-  questionPlan LicenseType @default(FREE)
+  questionPlan LicenseType  @default(FREE)
   question     String
+  description  String?
   answer       Json
   status       Status       @default(ACTIVE)
   createdAt    DateTime     @default(now())
@@ -72,59 +73,59 @@ model QuestionBank {
   deletedAt    DateTime?
 }
 
-model UserLicensesMaster {
-  id                Int                @id @default(autoincrement())
-  licenseType       LicenseType        @default(FREE)
-  paymentAmount     Int                @default(0)
-  discountAmount    Int                @default(0)
-  discountValidTill DateTime?
-  questionAllowed   Int                @default(0)
-  projectPerLicense String?
-  status            Status             @default(ACTIVE)
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
+model user_licenses_master {
+  id                 Int                  @id @default(autoincrement())
+  licenseType        LicenseType          @default(FREE)
+  paymentAmount      Int                  @default(0)
+  discountAmount     Int                  @default(0)
+  discountValidTill  DateTime?
+  questionAllowed    Int                  @default(0)
+  projectPerLicense  String?
+  status             Status               @default(ACTIVE)
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  deletedAt          DateTime?
+  user_license_slave user_license_slave[]
+}
+
+model user_license_slave {
+  id                Int                  @id @default(autoincrement())
+  licenseType       user_licenses_master @relation(fields: [licenseTypeId], references: [id])
+  licenseTypeId     Int
+  paymentStatus     Status               @default(INACTIVE)
+  licenseValidity   DateTime
+  user              user                 @relation(fields: [userId], references: [id])
+  userId            Int
+  paymentReference  String
+  paymentAmount     Int                  @default(0)
+  status            Status               @default(ACTIVE)
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
   deletedAt         DateTime?
-  UserLicenseslave  UserLicenseslave[]
+  assesement_result assesement_result[]
 }
 
-model UserLicenseslave {
-  id                   Int                @id @default(autoincrement())
-  licenseType          UserLicensesMaster @relation(fields: [licenseTypeId], references: [id])
-  licenseTypeId        Int
-  paymentStatus        Status             @default(INACTIVE)
-  licenseValidity      DateTime
-  user                 User               @relation(fields: [userId], references: [id])
-  userId               Int
-  paymentReference     String
-  paymentAmount        Int                @default(0)
-  status               Status             @default(ACTIVE)
-  createdAt            DateTime           @default(now())
-  updatedAt            DateTime           @updatedAt
-  deletedAt            DateTime?
-  assesementresult     assesementresult[]
+model user {
+  id                 Int                  @id @default(autoincrement())
+  name               String?
+  email              String               @unique
+  password           String
+  contact            String?              @unique
+  company            company?             @relation(fields: [companyId], references: [id])
+  companyId          Int?
+  address            String?
+  profession         String?
+  role               Role                 @default(USER)
+  status             Status               @default(ACTIVE)
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  deletedAt          DateTime?
+  user_license_slave user_license_slave[]
+  assesement_result  assesement_result[]
+  project            project[]
 }
 
-model User {
-  id               Int                @id @default(autoincrement())
-  name             String?
-  email            String             @unique
-  password         String
-  contact          String?            @unique
-  company          Company?           @relation(fields: [companyId], references: [id])
-  companyId        Int?
-  address          String?
-  profession       String?
-  role             Role               @default(USER)
-  status           Status             @default(ACTIVE)
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
-  deletedAt        DateTime?
-  UserLicenseslave UserLicenseslave[]
-  assesementresult assesementresult[]
-  Project          Project[]
-}
-
-model Company {
+model company {
   id          Int       @id @default(autoincrement())
   name        String
   logo        String
@@ -138,53 +139,52 @@ model Company {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   deletedAt   DateTime?
-  User        User[]
+  user        user[]
 }
 
-model Project {
-  id               Int                @id @default(autoincrement())
-  name             String
-  description      String
-  createdUser      User               @relation(fields: [createdUserId], references: [id])
-  createdUserId    Int
-  status           Status             @default(ACTIVE)
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
-  deletedAt        DateTime?
-  assesementresult assesementresult[]
+model project {
+  id                Int                 @id @default(autoincrement())
+  name              String
+  description       String
+  createdUser       user                @relation(fields: [createdUserId], references: [id])
+  createdUserId     Int
+  status            Status              @default(ACTIVE)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  deletedAt         DateTime?
+  assesement_result assesement_result[]
 }
 
-model assesementresult {
-  id                      Int                       @id @default(autoincrement())
-  user                    User                      @relation(fields: [userId], references: [id])
-  userId                  Int
-  project                 Project                   @relation(fields: [projectId], references: [id])
-  projectId               Int
-  license                 UserLicenseslave          @relation(fields: [licenseId], references: [id])
-  licenseId               Int
-  attemptNo               Int
-  totalScore              Int
-  resultStatus            Result                    @default(REVIEW)
-  certified               Status                    @default(INACTIVE)
-  certificatedId          Int
-  certificatePrivacy      Status                    @default(INACTIVE)
-  adminComments           String?
-  status                  Status                    @default(ACTIVE)
-  createdAt               DateTime                  @default(now())
-  updatedAt               DateTime                  @updatedAt
-  deletedAt               DateTime?
-  assesementResultRevised assesementResultRevised[]
+model assesement_result {
+  id                 Int                       @id @default(autoincrement())
+  user               user                      @relation(fields: [userId], references: [id])
+  userId             Int
+  project            project                   @relation(fields: [projectId], references: [id])
+  projectId          Int
+  license            user_license_slave        @relation(fields: [licenseId], references: [id])
+  licenseId          Int
+  assesement         assesement_result_revised @relation(fields: [assesementId], references: [id])
+  assesementId       Int
+  totalScore         Int
+  resultStatus       Result                    @default(REVIEW)
+  certified          Status                    @default(INACTIVE)
+  certificatedId     Int
+  certificatePrivacy Status                    @default(INACTIVE)
+  adminComments      String?
+  status             Status                    @default(ACTIVE)
+  createdAt          DateTime                  @default(now())
+  updatedAt          DateTime                  @updatedAt
+  deletedAt          DateTime?
 }
 
-model assesementResultRevised {
-  id          Int              @id @default(autoincrement())
-  result      Json
-  assesment   assesementresult @relation(fields: [assesmentId], references: [id])
-  assesmentId Int
-  status      Status           @default(ACTIVE)
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
-  deletedAt   DateTime?
+model assesement_result_revised {
+  id                Int                 @id @default(autoincrement())
+  result            Json
+  status            Status              @default(ACTIVE)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  deletedAt         DateTime?
+  assesement_result assesement_result[]
 }
 
 model compliance {

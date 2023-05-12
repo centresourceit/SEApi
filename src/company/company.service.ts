@@ -1,5 +1,10 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
+import { UpdateCompanyInput } from './dto/update-company.input';
 
 @Injectable()
 export class CompanyService {
@@ -7,7 +12,7 @@ export class CompanyService {
   async getAllCompany() {
     const companys = await this.prisma.company.findMany({
       include: {
-        User: true,
+        user: true,
       },
     });
     if (companys.length == 0)
@@ -19,11 +24,39 @@ export class CompanyService {
     const company = await this.prisma.company.findFirst({
       where: { id },
       include: {
-        User: true,
+        user: true,
       },
     });
     if (!company)
       throw new BadRequestException('No company exist with this id.');
     return company;
+  }
+
+  async updateCompanyById(id: number, company: UpdateCompanyInput) {
+    const dataToUpdate: {
+      [key: string]: any;
+    } = {};
+
+    for (const [key, value] of Object.entries(company)) {
+      if (value) {
+        dataToUpdate[key] = value;
+      }
+    }
+
+    const existingUser = await this.prisma.company.findUnique({
+      where: { id: id },
+    });
+
+    if (!existingUser) {
+      throw new NotFoundException(`Company with id ${id} not found`);
+    }
+
+    const updatedlicense = this.prisma.company.update({
+      where: { id: id },
+      data: dataToUpdate,
+    });
+    if (!updatedlicense)
+      throw new BadRequestException('Unable to update Company.');
+    return updatedlicense;
   }
 }

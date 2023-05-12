@@ -13,6 +13,9 @@ import { UserModule } from './user/user.module';
 import { CompanyModule } from './company/company.module';
 import { ProjectModule } from './project/project.module';
 import { LicenseModule } from './license/license.module';
+import { AnswersModule } from './answers/answers.module';
+import { ComplianceModule } from './compliance/compliance.module';
+import { LicenseslaveModule } from './licenseslave/licenseslave.module';
 @Module({
   imports: [
     PrismaModule,
@@ -32,6 +35,9 @@ import { LicenseModule } from './license/license.module';
     CompanyModule,
     ProjectModule,
     LicenseModule,
+    AnswersModule,
+    ComplianceModule,
+    LicenseslaveModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

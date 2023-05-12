@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateAuthInput } from './dto/update-auth.input';
 import { GraphQLError, assertWrappingType } from 'graphql';
-import { Prisma, User } from '@prisma/client';
+import { Prisma, user } from '@prisma/client';
 import { PrismaService } from 'prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { LoginUserInput } from './dto/loginuser.input';
@@ -17,7 +17,7 @@ export class AuthService {
   ) {}
 
   async signup(email: string, password: string) {
-    const foundUser: User = await this.prisma.user.findUnique({
+    const foundUser: user = await this.prisma.user.findUnique({
       where: { email },
     });
     if (foundUser) throw new BadRequestException('email already exist');
@@ -37,7 +37,7 @@ export class AuthService {
   }
 
   async signin(email: string, password: string) {
-    const user: User = await this.prisma.user.findUnique({
+    const user: user = await this.prisma.user.findUnique({
       where: { email: email },
     });
     if (!user) throw new BadRequestException('Wrong Credentials');
@@ -57,8 +57,8 @@ export class AuthService {
 
   async signout() {}
 
-  async findUserByEmail(email: string): Promise<User> {
-    const user: User = await this.prisma.user.findUnique({
+  async findUserByEmail(email: string): Promise<user> {
+    const user: user = await this.prisma.user.findUnique({
       where: { email: email },
     });
     return user;

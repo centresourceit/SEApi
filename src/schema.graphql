@@ -43,7 +43,7 @@ type Principle {
   createdAt: DateTime!
   updatedAt: DateTime!
   deletedAt: DateTime
-  QuestionBank: [QuestionBank!]!
+  question_bank: [QuestionBank!]!
 }
 
 type QuestionAns {
@@ -58,6 +58,7 @@ type QuestionBank {
   questionPlan: LicenseType!
   status: Status!
   question: String!
+  description: String
   answer: [QuestionAns!]!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -133,6 +134,79 @@ type License {
   deletedAt: DateTime
 }
 
+type Results {
+  id: Int!
+  userId: Int!
+  projectId: Int!
+  licenseId: Int!
+  attemptNo: Int!
+  totalScore: Int!
+  resultStatus: Result!
+  certified: Status!
+  certificatedId: Int!
+  certificatePrivacy: Status!
+  adminComments: String
+  status: Status!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  user: User!
+  license: License!
+  project: Project!
+}
+
+enum Result {
+  MET
+  NOTMET
+  REVIEW
+}
+
+type SavedAns {
+  question: String!
+  answer: String!
+  mark: Int!
+  rec: String!
+  status: Boolean!
+  updatedAt: DateTime!
+}
+
+type Answer {
+  id: Int!
+  assesmentId: Int!
+  answer: [SavedAns!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  assesment: Results!
+}
+
+type Compliance {
+  id: Int!
+  name: String!
+  description: String!
+  LearnMoreLink: String!
+  status: Status!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+}
+
+type Licenseslave {
+  id: Int!
+  licenseTypeId: Int!
+  userId: Int!
+  paymentStatus: Status!
+  licenseValidity: DateTime!
+  paymentReference: String!
+  paymentAmount: Int!
+  status: Status!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  user: User!
+  licenseType: License!
+}
+
 type Query {
   index: String!
   signin(loginUserInput: LoginUserInput!): Auth!
@@ -150,6 +224,12 @@ type Query {
   getAllProjectById(id: Int!): Project!
   getAllLicense: [License!]!
   getAllLicenseById(id: Int!): License!
+  getAllAnswers: [Answer!]!
+  getAllResults: [Results!]!
+  getAllCompliances: [Compliance!]!
+  getAllCompliancesById(id: Int!): Compliance!
+  getAllLicenseslave: [Licenseslave!]!
+  getAllLicenseslaveById(id: Int!): Licenseslave!
 }
 
 input LoginUserInput {
@@ -159,9 +239,164 @@ input LoginUserInput {
 
 type Mutation {
   signup(signUpUserInput: SignUpUserInput!): Auth!
+  updateQuestionById(updateQuestionbankInput: UpdateQuestionbankInput!): QuestionBank!
+  updatePrincipleById(updatePrincipleInput: UpdatePrincipleInput!): Principle!
+  updateUserById(updateUserInput: UpdateUserInput!): User!
+  updateCompanyById(updateCompanyInput: UpdateCompanyInput!): Company!
+  updateProjectById(updateProjectInput: UpdateProjectInput!): Project!
+  updateLicenseById(updateLicenseInput: UpdateLicenseInput!): License!
+  createResults(createAnswerInput: CreateAnswerInput!, createResultInput: CreateResultInput!): Results!
+  updateResults(updateAnswerInput: UpdateAnswerInput!, updateResultInput: UpdateResultInput!): Results!
+  updateComplianceById(updateComplianceInput: UpdateComplianceInput!): Compliance!
+  updateLicenseslaveById(updateLicenseslaveInput: UpdateLicenseslaveInput!): Licenseslave!
 }
 
 input SignUpUserInput {
   email: String!
   password: String!
+}
+
+input UpdateQuestionbankInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+  questionType: QuestionType
+  questionPlan: LicenseType
+  status: Status
+  question: String
+  description: String
+  answer: [QuestionAnswer!]
+}
+
+input QuestionAnswer {
+  answer: String!
+  mark: Int!
+  rec: String!
+}
+
+input UpdatePrincipleInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+  name: String
+  description: String
+  status: Status
+}
+
+input UpdateUserInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+  name: String
+  email: String
+  contact: String
+  address: String
+  profession: String
+  role: Role
+  status: Status
+}
+
+input UpdateCompanyInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+  name: String
+  logo: String
+  website: String
+  email: String
+  ctoContact: String
+  description: String
+  address: String
+  role: Role
+  status: Status
+}
+
+input UpdateProjectInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+  name: String
+  description: String
+  status: Status
+}
+
+input UpdateLicenseInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+  licenseType: LicenseType
+  paymentAmount: Int
+  discountAmount: String
+  questionAllowed: Int
+  projectPerLicense: Int
+  discountValidTill: DateTime
+  status: Status
+}
+
+input CreateAnswerInput {
+  answers: [SavedAnswer!]!
+}
+
+input SavedAnswer {
+  questionId: Int
+  question: String
+  answer: String
+  mark: Int
+  rec: String
+  status: Boolean
+  updatedAt: DateTime
+}
+
+input CreateResultInput {
+  userId: Int
+  projectId: Int
+  licenseId: Int
+  assesementId: Int
+  totalScore: Int
+  resultStatus: Result
+  certified: Status
+  certificatedId: Int
+  certificatePrivacy: Status
+  status: Status
+}
+
+input UpdateAnswerInput {
+  answers: [SavedAnswer!]
+}
+
+input UpdateResultInput {
+  userId: Int
+  projectId: Int
+  licenseId: Int
+  assesementId: Int
+  totalScore: Int
+  resultStatus: Result
+  certified: Status
+  certificatedId: Int
+  certificatePrivacy: Status
+  status: Status
+  id: Int
+}
+
+input UpdateComplianceInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+  name: String
+  description: String
+  LearnMoreLink: String
+  status: Status
+}
+
+input UpdateLicenseslaveInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+  licenseTypeId: Int
+  userId: Int
+  paymentStatus: Status
+  licenseValidity: DateTime
+  paymentReference: String
+  paymentAmount: Int
+  status: Status
 }
