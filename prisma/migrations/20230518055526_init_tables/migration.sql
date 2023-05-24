@@ -2,7 +2,7 @@
 CREATE TABLE `principle` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
-    `description` VARCHAR(191) NOT NULL,
+    `description` MEDIUMTEXT NOT NULL,
     `status` ENUM('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE `question_bank` (
     `questionType` ENUM('MCQ', 'SLIDER', 'TANDF', 'PERCENTAGE') NOT NULL DEFAULT 'TANDF',
     `questionPlan` ENUM('FREE', 'BUSINESS', 'PREMIUM', 'PLATINUM') NOT NULL DEFAULT 'FREE',
     `question` VARCHAR(191) NOT NULL,
-    `description` VARCHAR(191) NOT NULL,
+    `description` MEDIUMTEXT NULL,
     `answer` JSON NOT NULL,
     `status` ENUM('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -92,7 +92,7 @@ CREATE TABLE `company` (
     `website` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `ctoContact` VARCHAR(191) NOT NULL,
-    `description` VARCHAR(191) NOT NULL,
+    `description` MEDIUMTEXT NOT NULL,
     `address` VARCHAR(191) NOT NULL,
     `role` ENUM('ADMIN', 'USER', 'COMPANY') NOT NULL DEFAULT 'USER',
     `status` ENUM('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE',
@@ -108,7 +108,7 @@ CREATE TABLE `company` (
 CREATE TABLE `project` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
-    `description` VARCHAR(191) NOT NULL,
+    `description` MEDIUMTEXT NOT NULL,
     `createdUserId` INTEGER NOT NULL,
     `status` ENUM('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -126,9 +126,9 @@ CREATE TABLE `assesement_result` (
     `licenseId` INTEGER NOT NULL,
     `assesementId` INTEGER NOT NULL,
     `totalScore` INTEGER NOT NULL,
-    `resultStatus` ENUM('MET', 'NOTMET', 'REVIEW') NOT NULL DEFAULT 'REVIEW',
+    `resultStatus` ENUM('MET', 'NOTMET', 'REVIEW', 'ONGOING') NOT NULL DEFAULT 'REVIEW',
     `certified` ENUM('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'INACTIVE',
-    `certificatedId` INTEGER NOT NULL,
+    `certificatedId` VARCHAR(191) NOT NULL,
     `certificatePrivacy` ENUM('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'INACTIVE',
     `adminComments` VARCHAR(191) NULL,
     `status` ENUM('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE',
@@ -155,8 +155,27 @@ CREATE TABLE `assesement_result_revised` (
 CREATE TABLE `compliance` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
-    `description` VARCHAR(191) NOT NULL,
+    `description` MEDIUMTEXT NOT NULL,
     `LearnMoreLink` VARCHAR(191) NOT NULL,
+    `status` ENUM('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE',
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+    `deletedAt` DATETIME(3) NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `feedback` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `userId` INTEGER NOT NULL,
+    `feedbackType` ENUM('General_Feedback', 'Suggestions', 'Bug_Report', 'New_Question_Request', 'New_Feature_Request') NOT NULL DEFAULT 'New_Feature_Request',
+    `comments` JSON NOT NULL,
+    `resultComment` VARCHAR(191) NOT NULL,
+    `experienceRate` ENUM('POOR', 'SATISFACTORY', 'GOOD', 'VERY_GOOD', 'EXCELLENT') NOT NULL DEFAULT 'POOR',
+    `toolComment` MEDIUMTEXT NOT NULL,
+    `generalComment` MEDIUMTEXT NULL,
+    `email` MEDIUMTEXT NOT NULL,
     `status` ENUM('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
@@ -191,3 +210,6 @@ ALTER TABLE `assesement_result` ADD CONSTRAINT `assesement_result_licenseId_fkey
 
 -- AddForeignKey
 ALTER TABLE `assesement_result` ADD CONSTRAINT `assesement_result_assesementId_fkey` FOREIGN KEY (`assesementId`) REFERENCES `assesement_result_revised`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `feedback` ADD CONSTRAINT `feedback_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

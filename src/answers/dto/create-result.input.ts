@@ -33,8 +33,8 @@ export class CreateResultInput {
   certified: Status;
 
   @IsNotEmpty()
-  @Field(() => Int, { nullable: true })
-  certificatedId: number;
+  @Field(() => String, { nullable: true })
+  certificatedId: string;
 
   @IsOptional()
   @Field(() => Status, { nullable: true })

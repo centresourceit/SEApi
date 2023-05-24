@@ -51,8 +51,16 @@ export class AnswersService {
 
     if (!answer) throw new BadRequestException('Unable to create answers');
     createResultInput.assesementId = answer.id;
+
     const result = await this.prisma.assesement_result.create({
-      data: createResultInput,
+      data: {
+        userId: createResultInput.userId,
+        projectId: createResultInput.projectId,
+        licenseId: createResultInput.licenseId,
+        assesementId: createResultInput.assesementId,
+        totalScore: createResultInput.totalScore,
+        certificatedId: createResultInput.certificatedId.toString(),
+      },
     });
 
     return { ...result, answer };
@@ -104,7 +112,6 @@ export class AnswersService {
         })),
       },
     });
-
     return { ...result, answer };
   }
 }

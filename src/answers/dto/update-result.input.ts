@@ -38,8 +38,8 @@ export class UpdateResultInput extends PartialType(CreateResultInput) {
   certified: Status;
 
   @IsOptional()
-  @Field(() => Int, { nullable: true })
-  certificatedId: number;
+  @Field(() => String, { nullable: true })
+  certificatedId: string;
 
   @IsOptional()
   @Field(() => Status, { nullable: true })

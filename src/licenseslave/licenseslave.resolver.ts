@@ -3,7 +3,10 @@ import { LicenseslaveService } from './licenseslave.service';
 import { Licenseslave } from './entities/licenseslave.entity';
 import { CreateLicenseslaveInput } from './dto/create-licenseslave.input';
 import { UpdateLicenseslaveInput } from './dto/update-licenseslave.input';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { UseGuards } from '@nestjs/common';
 
+@UseGuards(AuthGuard)
 @Resolver(() => Licenseslave)
 export class LicenseslaveResolver {
   constructor(private readonly licenseslaveService: LicenseslaveService) {}
@@ -17,9 +20,15 @@ export class LicenseslaveResolver {
   getAllLicenseslaveById(@Args('id', { type: () => Int }) id: number) {
     return this.licenseslaveService.getAllLicenseslaveById(id);
   }
-  
+
   @Mutation(() => Licenseslave)
-  updateLicenseslaveById(@Args('updateLicenseslaveInput') updateLicenseslaveInput: UpdateLicenseslaveInput) {
-    return this.licenseslaveService.updateLicenseslaveById(updateLicenseslaveInput.id, updateLicenseslaveInput);
+  updateLicenseslaveById(
+    @Args('updateLicenseslaveInput')
+    updateLicenseslaveInput: UpdateLicenseslaveInput,
+  ) {
+    return this.licenseslaveService.updateLicenseslaveById(
+      updateLicenseslaveInput.id,
+      updateLicenseslaveInput,
+    );
   }
 }

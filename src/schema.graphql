@@ -159,6 +159,7 @@ enum Result {
   MET
   NOTMET
   REVIEW
+  ONGOING
 }
 
 type SavedAns {
@@ -207,6 +208,47 @@ type Licenseslave {
   licenseType: License!
 }
 
+type FeedbackComment {
+  principleId: Int!
+  principle: String!
+  comment: String!
+  status: Boolean!
+  updatedAt: DateTime!
+}
+
+type Feedback {
+  id: Int!
+  userId: Int!
+  feedbackType: FeedbackType
+  resultComment: String
+  comments: [FeedbackComment!]
+  experienceRate: ExperienceRate
+  toolComment: String
+  generalComment: String
+  email: String
+  status: Status!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  user: User!
+}
+
+enum FeedbackType {
+  General_Feedback
+  Suggestions
+  Bug_Report
+  New_Question_Request
+  New_Feature_Request
+}
+
+enum ExperienceRate {
+  POOR
+  SATISFACTORY
+  GOOD
+  VERY_GOOD
+  EXCELLENT
+}
+
 type Query {
   index: String!
   signin(loginUserInput: LoginUserInput!): Auth!
@@ -230,6 +272,8 @@ type Query {
   getAllCompliancesById(id: Int!): Compliance!
   getAllLicenseslave: [Licenseslave!]!
   getAllLicenseslaveById(id: Int!): Licenseslave!
+  getAllFeedback: [Feedback!]!
+  getAllFeedbackById(id: Int!): Feedback!
 }
 
 input LoginUserInput {
@@ -249,6 +293,7 @@ type Mutation {
   updateResults(updateAnswerInput: UpdateAnswerInput!, updateResultInput: UpdateResultInput!): Results!
   updateComplianceById(updateComplianceInput: UpdateComplianceInput!): Compliance!
   updateLicenseslaveById(updateLicenseslaveInput: UpdateLicenseslaveInput!): Licenseslave!
+  createFeedback(createFeedbackInput: CreateFeedbackInput!): Feedback!
 }
 
 input SignUpUserInput {
@@ -355,7 +400,7 @@ input CreateResultInput {
   totalScore: Int
   resultStatus: Result
   certified: Status
-  certificatedId: Int
+  certificatedId: String
   certificatePrivacy: Status
   status: Status
 }
@@ -372,7 +417,7 @@ input UpdateResultInput {
   totalScore: Int
   resultStatus: Result
   certified: Status
-  certificatedId: Int
+  certificatedId: String
   certificatePrivacy: Status
   status: Status
   id: Int
@@ -399,4 +444,24 @@ input UpdateLicenseslaveInput {
   paymentReference: String
   paymentAmount: Int
   status: Status
+}
+
+input CreateFeedbackInput {
+  userId: Int
+  feedbackType: FeedbackType
+  comments: [SavedFeedbackComment!]
+  resultComment: String
+  experienceRate: ExperienceRate
+  toolComment: String
+  generalComment: String
+  email: String
+  status: Status
+}
+
+input SavedFeedbackComment {
+  principleId: Int!
+  principle: String!
+  comment: String!
+  status: Boolean!
+  updatedAt: DateTime!
 }

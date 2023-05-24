@@ -36,7 +36,24 @@ export enum LicenseType {
 export enum Result {
     MET = "MET",
     NOTMET = "NOTMET",
-    REVIEW = "REVIEW"
+    REVIEW = "REVIEW",
+    ONGOING = "ONGOING"
+}
+
+export enum FeedbackType {
+    General_Feedback = "General_Feedback",
+    Suggestions = "Suggestions",
+    Bug_Report = "Bug_Report",
+    New_Question_Request = "New_Question_Request",
+    New_Feature_Request = "New_Feature_Request"
+}
+
+export enum ExperienceRate {
+    POOR = "POOR",
+    SATISFACTORY = "SATISFACTORY",
+    GOOD = "GOOD",
+    VERY_GOOD = "VERY_GOOD",
+    EXCELLENT = "EXCELLENT"
 }
 
 export interface LoginUserInput {
@@ -142,7 +159,7 @@ export interface CreateResultInput {
     totalScore?: Nullable<number>;
     resultStatus?: Nullable<Result>;
     certified?: Nullable<Status>;
-    certificatedId?: Nullable<number>;
+    certificatedId?: Nullable<string>;
     certificatePrivacy?: Nullable<Status>;
     status?: Nullable<Status>;
 }
@@ -159,7 +176,7 @@ export interface UpdateResultInput {
     totalScore?: Nullable<number>;
     resultStatus?: Nullable<Result>;
     certified?: Nullable<Status>;
-    certificatedId?: Nullable<number>;
+    certificatedId?: Nullable<string>;
     certificatePrivacy?: Nullable<Status>;
     status?: Nullable<Status>;
     id?: Nullable<number>;
@@ -184,6 +201,26 @@ export interface UpdateLicenseslaveInput {
     paymentReference?: Nullable<string>;
     paymentAmount?: Nullable<number>;
     status?: Nullable<Status>;
+}
+
+export interface CreateFeedbackInput {
+    userId?: Nullable<number>;
+    feedbackType?: Nullable<FeedbackType>;
+    comments?: Nullable<SavedFeedbackComment[]>;
+    resultComment?: Nullable<string>;
+    experienceRate?: Nullable<ExperienceRate>;
+    toolComment?: Nullable<string>;
+    generalComment?: Nullable<string>;
+    email?: Nullable<string>;
+    status?: Nullable<Status>;
+}
+
+export interface SavedFeedbackComment {
+    principleId: number;
+    principle: string;
+    comment: string;
+    status: boolean;
+    updatedAt: DateTime;
 }
 
 export interface Auth {
@@ -355,6 +392,31 @@ export interface Licenseslave {
     licenseType: License;
 }
 
+export interface FeedbackComment {
+    principleId: number;
+    principle: string;
+    comment: string;
+    status: boolean;
+    updatedAt: DateTime;
+}
+
+export interface Feedback {
+    id: number;
+    userId: number;
+    feedbackType?: Nullable<FeedbackType>;
+    resultComment?: Nullable<string>;
+    comments?: Nullable<FeedbackComment[]>;
+    experienceRate?: Nullable<ExperienceRate>;
+    toolComment?: Nullable<string>;
+    generalComment?: Nullable<string>;
+    email?: Nullable<string>;
+    status: Status;
+    createdAt: DateTime;
+    updatedAt: DateTime;
+    deletedAt?: Nullable<DateTime>;
+    user: User;
+}
+
 export interface IQuery {
     index(): string | Promise<string>;
     signin(loginUserInput: LoginUserInput): Auth | Promise<Auth>;
@@ -378,6 +440,8 @@ export interface IQuery {
     getAllCompliancesById(id: number): Compliance | Promise<Compliance>;
     getAllLicenseslave(): Licenseslave[] | Promise<Licenseslave[]>;
     getAllLicenseslaveById(id: number): Licenseslave | Promise<Licenseslave>;
+    getAllFeedback(): Feedback[] | Promise<Feedback[]>;
+    getAllFeedbackById(id: number): Feedback | Promise<Feedback>;
 }
 
 export interface IMutation {
@@ -392,6 +456,7 @@ export interface IMutation {
     updateResults(updateAnswerInput: UpdateAnswerInput, updateResultInput: UpdateResultInput): Results | Promise<Results>;
     updateComplianceById(updateComplianceInput: UpdateComplianceInput): Compliance | Promise<Compliance>;
     updateLicenseslaveById(updateLicenseslaveInput: UpdateLicenseslaveInput): Licenseslave | Promise<Licenseslave>;
+    createFeedback(createFeedbackInput: CreateFeedbackInput): Feedback | Promise<Feedback>;
 }
 
 export type DateTime = any;

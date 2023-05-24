@@ -45,12 +45,29 @@ enum Result {
   MET
   NOTMET
   REVIEW
+  ONGOING
+}
+
+enum FeedbackType {
+  General_Feedback
+  Suggestions
+  Bug_Report
+  New_Question_Request
+  New_Feature_Request
+}
+
+enum ExperienceRate {
+  POOR
+  SATISFACTORY
+  GOOD
+  VERY_GOOD
+  EXCELLENT
 }
 
 model principle {
   id            Int             @id @default(autoincrement())
   name          String          @unique
-  description   String
+  description   String          @db.MediumText
   status        Status          @default(ACTIVE)
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
@@ -59,18 +76,19 @@ model principle {
 }
 
 model question_bank {
-  id           Int          @id @default(autoincrement())
-  principle    principle    @relation(fields: [principleId], references: [id])
-  principleId  Int
-  questionType QuestionType @default(TANDF)
-  questionPlan LicenseType  @default(FREE)
-  question     String
-  description  String?
-  answer       Json
-  status       Status       @default(ACTIVE)
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  deletedAt    DateTime?
+  id            Int          @id @default(autoincrement())
+  principle     principle    @relation(fields: [principleId], references: [id])
+  principleId   Int
+  questionRefId Int?
+  questionType  QuestionType @default(TANDF)
+  questionPlan  LicenseType  @default(FREE)
+  question      String
+  description   String?      @db.MediumText
+  answer        Json
+  status        Status       @default(ACTIVE)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  deletedAt     DateTime?
 }
 
 model user_licenses_master {
@@ -123,6 +141,7 @@ model user {
   user_license_slave user_license_slave[]
   assesement_result  assesement_result[]
   project            project[]
+  feedback           feedback[]
 }
 
 model company {
@@ -132,7 +151,7 @@ model company {
   website     String
   email       String    @unique
   ctoContact  String
-  description String
+  description String    @db.MediumText
   address     String
   role        Role      @default(USER)
   status      Status    @default(ACTIVE)
@@ -145,7 +164,7 @@ model company {
 model project {
   id                Int                 @id @default(autoincrement())
   name              String
-  description       String
+  description       String              @db.MediumText
   createdUser       user                @relation(fields: [createdUserId], references: [id])
   createdUserId     Int
   status            Status              @default(ACTIVE)
@@ -168,7 +187,7 @@ model assesement_result {
   totalScore         Int
   resultStatus       Result                    @default(REVIEW)
   certified          Status                    @default(INACTIVE)
-  certificatedId     Int
+  certificatedId     String
   certificatePrivacy Status                    @default(INACTIVE)
   adminComments      String?
   status             Status                    @default(ACTIVE)
@@ -190,10 +209,27 @@ model assesement_result_revised {
 model compliance {
   id            Int       @id @default(autoincrement())
   name          String
-  description   String
+  description   String    @db.MediumText
   LearnMoreLink String
   status        Status    @default(ACTIVE)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   deletedAt     DateTime?
+}
+
+model feedback {
+  id             Int            @id @default(autoincrement())
+  user           user           @relation(fields: [userId], references: [id])
+  userId         Int
+  feedbackType   FeedbackType   @default(New_Feature_Request)
+  comments       Json
+  resultComment  String         @db.MediumText
+  experienceRate ExperienceRate @default(POOR)
+  toolComment    String         @db.MediumText
+  generalComment String?        @db.MediumText
+  email          String?
+  status         Status         @default(ACTIVE)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  deletedAt      DateTime?
 }

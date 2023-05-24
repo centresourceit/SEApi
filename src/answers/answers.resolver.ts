@@ -6,7 +6,11 @@ import { UpdateAnswerInput } from './dto/update-answer.input';
 import { Results } from './entities/result.entity';
 import { CreateResultInput } from './dto/create-result.input';
 import { UpdateResultInput } from './dto/update-result.input';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { UseGuards } from '@nestjs/common';
 
+
+@UseGuards(AuthGuard)
 @Resolver(() => Answer)
 export class AnswersResolver {
   constructor(private readonly answersService: AnswersService) {}

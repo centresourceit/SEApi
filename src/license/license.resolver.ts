@@ -3,7 +3,10 @@ import { LicenseService } from './license.service';
 import { License } from './entities/license.entity';
 import { CreateLicenseInput } from './dto/create-license.input';
 import { UpdateLicenseInput } from './dto/update-license.input';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { UseGuards } from '@nestjs/common';
 
+@UseGuards(AuthGuard)
 @Resolver(() => License)
 export class LicenseResolver {
   constructor(private readonly licenseService: LicenseService) {}
