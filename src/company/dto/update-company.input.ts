@@ -11,31 +11,31 @@ export class UpdateCompanyInput extends PartialType(CreateCompanyInput) {
 
   @IsOptional()
   @Field(() => String, { nullable: true })
-  name: String;
+  name: string;
 
   @IsOptional()
   @Field(() => String, { nullable: true })
-  logo: String;
+  logo: string;
 
   @IsOptional()
   @Field(() => String, { nullable: true })
-  website: String;
+  website: string;
 
   @IsOptional()
   @Field(() => String, { nullable: true })
-  email: String;
+  email: string;
+
+  @IsOptional()
+  @Field(() => Int, { nullable: true })
+  ctoContact: number;
 
   @IsOptional()
   @Field(() => String, { nullable: true })
-  ctoContact: String;
+  description: string;
 
   @IsOptional()
   @Field(() => String, { nullable: true })
-  description: String;
-
-  @IsOptional()
-  @Field(() => String, { nullable: true })
-  address: String;
+  address: string;
 
   @IsOptional()
   @Field(() => Role, { nullable: true })

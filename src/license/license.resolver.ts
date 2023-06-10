@@ -11,7 +11,6 @@ import { UseGuards } from '@nestjs/common';
 export class LicenseResolver {
   constructor(private readonly licenseService: LicenseService) {}
 
-
   @Query(() => [License])
   getAllLicense() {
     return this.licenseService.getAllLicense();
@@ -21,10 +20,21 @@ export class LicenseResolver {
   getAllLicenseById(@Args('id', { type: () => Int }) id: number) {
     return this.licenseService.getAllLicenseById(id);
   }
-  
+
   @Mutation(() => License)
-  updateLicenseById(@Args('updateLicenseInput') updateLicenseInput: UpdateLicenseInput) {
-    return this.licenseService.updateLicenseById(updateLicenseInput.id, updateLicenseInput);
+  createLicense(
+    @Args('createLicenseInput') createLicenseInput: CreateLicenseInput,
+  ) {
+    return this.licenseService.createLicense(createLicenseInput);
   }
 
+  @Mutation(() => License)
+  updateLicenseById(
+    @Args('updateLicenseInput') updateLicenseInput: UpdateLicenseInput,
+  ) {
+    return this.licenseService.updateLicenseById(
+      updateLicenseInput.id,
+      updateLicenseInput,
+    );
+  }
 }

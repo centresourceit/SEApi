@@ -11,7 +11,6 @@ import { AuthGuard } from 'src/auth/auth.guard';
 export class QuestionbankResolver {
   constructor(private readonly questionbankService: QuestionbankService) {}
 
- 
   @Query(() => [QuestionBank])
   getAllQuestion() {
     return this.questionbankService.getAllQuestion();
@@ -23,7 +22,21 @@ export class QuestionbankResolver {
   }
 
   @Mutation(() => QuestionBank)
-  updateQuestionById(@Args('updateQuestionbankInput') updateQuestionbankInput: UpdateQuestionbankInput) {
-    return this.questionbankService.updateQuestionById(updateQuestionbankInput.id, updateQuestionbankInput);
+  createQuestion(
+    @Args('createQuestionbankInput')
+    createQuestionbankInput: CreateQuestionbankInput,
+  ) {
+    return this.questionbankService.createQuestion(createQuestionbankInput);
+  }
+
+  @Mutation(() => QuestionBank)
+  updateQuestionById(
+    @Args('updateQuestionbankInput')
+    updateQuestionbankInput: UpdateQuestionbankInput,
+  ) {
+    return this.questionbankService.updateQuestionById(
+      updateQuestionbankInput.id,
+      updateQuestionbankInput,
+    );
   }
 }

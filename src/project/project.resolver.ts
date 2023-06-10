@@ -22,7 +22,26 @@ export class ProjectResolver {
   }
 
   @Mutation(() => Project)
-  updateProjectById(@Args('updateProjectInput') updateProjectInput: UpdateProjectInput) {
-    return this.projectService.updateProjectById(updateProjectInput.id, updateProjectInput);
+  createProject(
+    @Args('createProjectInput') createProjectInput: CreateProjectInput,
+  ) {
+    return this.projectService.createProject(createProjectInput);
+  }
+
+  @Mutation(() => Project)
+  updateProjectById(
+    @Args('updateProjectInput') updateProjectInput: UpdateProjectInput,
+  ) {
+    return this.projectService.updateProjectById(
+      updateProjectInput.id,
+      updateProjectInput,
+    );
+  }
+
+  @Mutation(() => Project)
+  deleteProjectById(
+    @Args('updateProjectInput') updateProjectInput: UpdateProjectInput,
+  ) {
+    return this.projectService.deleteProject(updateProjectInput);
   }
 }

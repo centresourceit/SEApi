@@ -22,7 +22,19 @@ export class ComplianceResolver {
   }
 
   @Mutation(() => Compliance)
-  updateComplianceById(@Args('updateComplianceInput') updateComplianceInput: UpdateComplianceInput) {
-    return this.complianceService.updateComplianceById(updateComplianceInput.id, updateComplianceInput);
+  createCompliance(
+    @Args('createComplianceInput') createComplianceInput: CreateComplianceInput,
+  ) {
+    return this.complianceService.createCompliance(createComplianceInput);
+  }
+
+  @Mutation(() => Compliance)
+  updateComplianceById(
+    @Args('updateComplianceInput') updateComplianceInput: UpdateComplianceInput,
+  ) {
+    return this.complianceService.updateComplianceById(
+      updateComplianceInput.id,
+      updateComplianceInput,
+    );
   }
 }

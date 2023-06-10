@@ -22,7 +22,19 @@ export class PrincipleResolver {
   }
 
   @Mutation(() => Principle)
-  updatePrincipleById(@Args('updatePrincipleInput') updatePrincipleInput: UpdatePrincipleInput) {
-    return this.principleService.updatePrincipleById(updatePrincipleInput.id, updatePrincipleInput);
+  createPrinciple(
+    @Args('createPrincipleInput') createPrincipleInput: CreatePrincipleInput,
+  ) {
+    return this.principleService.createPrinciple(createPrincipleInput);
+  }
+
+  @Mutation(() => Principle)
+  updatePrincipleById(
+    @Args('updatePrincipleInput') updatePrincipleInput: UpdatePrincipleInput,
+  ) {
+    return this.principleService.updatePrincipleById(
+      updatePrincipleInput.id,
+      updatePrincipleInput,
+    );
   }
 }

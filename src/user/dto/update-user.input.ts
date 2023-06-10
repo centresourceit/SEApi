@@ -11,23 +11,23 @@ export class UpdateUserInput extends PartialType(CreateUserInput) {
 
   @IsOptional()
   @Field(() => String, { nullable: true })
-  name: String;
+  name: string;
 
   @IsOptional()
   @Field(() => String, { nullable: true })
-  email: String;
+  email: string;
+
+  @IsOptional()
+  @Field(() => Int, { nullable: true })
+  contact: number;
 
   @IsOptional()
   @Field(() => String, { nullable: true })
-  contact: String;
+  address: string;
 
   @IsOptional()
   @Field(() => String, { nullable: true })
-  address: String;
-
-  @IsOptional()
-  @Field(() => String, { nullable: true })
-  profession: String;
+  profession: string;
 
   @IsOptional()
   @Field(() => Role, { nullable: true })

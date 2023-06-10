@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
 import { UpdateCompanyInput } from './dto/update-company.input';
+import { CreateCompanyInput } from './dto/create-company.input';
 
 @Injectable()
 export class CompanyService {
@@ -30,6 +31,23 @@ export class CompanyService {
     if (!company)
       throw new BadRequestException('No company exist with this id.');
     return company;
+  }
+
+  async createCompany(company: CreateCompanyInput) {
+    const dataToCreate: any = {};
+
+    for (const [key, value] of Object.entries(company)) {
+      if (value) {
+        dataToCreate[key] = value;
+      }
+    }
+
+    const Company = await this.prisma.company.create({
+      data: dataToCreate,
+    });
+
+    if (!Company) throw new BadRequestException('Unable to create company');
+    return Company;
   }
 
   async updateCompanyById(id: number, company: UpdateCompanyInput) {

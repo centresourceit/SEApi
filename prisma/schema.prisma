@@ -36,9 +36,9 @@ enum LicenseType {
 }
 
 enum Role {
+  SYSTEM
   ADMIN
   USER
-  COMPANY
 }
 
 enum Result {
@@ -98,7 +98,7 @@ model user_licenses_master {
   discountAmount     Int                  @default(0)
   discountValidTill  DateTime?
   questionAllowed    Int                  @default(0)
-  projectPerLicense  String?
+  projectPerLicense  Int
   status             Status               @default(ACTIVE)
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
@@ -128,7 +128,7 @@ model user {
   name               String?
   email              String               @unique
   password           String
-  contact            String?              @unique
+  contact            BigInt?              @unique
   company            company?             @relation(fields: [companyId], references: [id])
   companyId          Int?
   address            String?
@@ -150,10 +150,9 @@ model company {
   logo        String
   website     String
   email       String    @unique
-  ctoContact  String
+  ctoContact  BigInt
   description String    @db.MediumText
   address     String
-  role        Role      @default(USER)
   status      Status    @default(ACTIVE)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt

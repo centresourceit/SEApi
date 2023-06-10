@@ -27,6 +27,23 @@ export class LicenseService {
     return license;
   }
 
+  async createLicense(license: CreateLicenseInput) {
+    const dataToCreate: any = {};
+
+    for (const [key, value] of Object.entries(license)) {
+      if (value) {
+        dataToCreate[key] = value;
+      }
+    }
+
+    const License = await this.prisma.user_licenses_master.create({
+      data: dataToCreate,
+    });
+
+    if (!License) throw new BadRequestException('Unable to create license');
+    return License;
+  }
+
   async updateLicenseById(id: number, license: UpdateLicenseInput) {
     const dataToUpdate: {
       [key: string]: any;

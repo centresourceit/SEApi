@@ -20,9 +20,9 @@ type Auth {
 }
 
 enum Role {
+  SYSTEM
   ADMIN
   USER
-  COMPANY
 }
 
 enum Status {
@@ -143,7 +143,7 @@ type Results {
   totalScore: Int!
   resultStatus: Result!
   certified: Status!
-  certificatedId: Int!
+  certificatedId: String!
   certificatePrivacy: Status!
   adminComments: String
   status: Status!
@@ -283,14 +283,21 @@ input LoginUserInput {
 
 type Mutation {
   signup(signUpUserInput: SignUpUserInput!): Auth!
+  createQuestion(createQuestionbankInput: CreateQuestionbankInput!): QuestionBank!
   updateQuestionById(updateQuestionbankInput: UpdateQuestionbankInput!): QuestionBank!
+  createPrinciple(createPrincipleInput: CreatePrincipleInput!): Principle!
   updatePrincipleById(updatePrincipleInput: UpdatePrincipleInput!): Principle!
   updateUserById(updateUserInput: UpdateUserInput!): User!
+  createCompany(createCompanyInput: CreateCompanyInput!): Company!
   updateCompanyById(updateCompanyInput: UpdateCompanyInput!): Company!
+  createProject(createProjectInput: CreateProjectInput!): Project!
   updateProjectById(updateProjectInput: UpdateProjectInput!): Project!
+  deleteProjectById(updateProjectInput: UpdateProjectInput!): Project!
+  createLicense(createLicenseInput: CreateLicenseInput!): License!
   updateLicenseById(updateLicenseInput: UpdateLicenseInput!): License!
   createResults(createAnswerInput: CreateAnswerInput!, createResultInput: CreateResultInput!): Results!
   updateResults(updateAnswerInput: UpdateAnswerInput!, updateResultInput: UpdateResultInput!): Results!
+  createCompliance(createComplianceInput: CreateComplianceInput!): Compliance!
   updateComplianceById(updateComplianceInput: UpdateComplianceInput!): Compliance!
   updateLicenseslaveById(updateLicenseslaveInput: UpdateLicenseslaveInput!): Licenseslave!
   createFeedback(createFeedbackInput: CreateFeedbackInput!): Feedback!
@@ -301,16 +308,30 @@ input SignUpUserInput {
   password: String!
 }
 
-input UpdateQuestionbankInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+input CreateQuestionbankInput {
+  principleId: Int
   questionType: QuestionType
   questionPlan: LicenseType
-  status: Status
+  question: String
+  description: String
+  answer: [QuestionAnswerInput!]
+}
+
+input QuestionAnswerInput {
+  answer: String!
+  mark: Int!
+  rec: String!
+}
+
+input UpdateQuestionbankInput {
+  principleId: Int
+  questionType: QuestionType
+  questionPlan: LicenseType
   question: String
   description: String
   answer: [QuestionAnswer!]
+  id: Int!
+  status: Status
 }
 
 input QuestionAnswer {
@@ -319,13 +340,17 @@ input QuestionAnswer {
   rec: String!
 }
 
-input UpdatePrincipleInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+input CreatePrincipleInput {
   name: String
   description: String
   status: Status
+}
+
+input UpdatePrincipleInput {
+  name: String
+  description: String
+  status: Status
+  id: Int!
 }
 
 input UpdateUserInput {
@@ -334,47 +359,70 @@ input UpdateUserInput {
   id: Int!
   name: String
   email: String
-  contact: String
+  contact: Int
   address: String
   profession: String
   role: Role
   status: Status
 }
 
-input UpdateCompanyInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+input CreateCompanyInput {
   name: String
   logo: String
   website: String
   email: String
-  ctoContact: String
+  ctoContact: Int
   description: String
   address: String
-  role: Role
   status: Status
 }
 
-input UpdateProjectInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+input UpdateCompanyInput {
+  name: String
+  logo: String
+  website: String
+  email: String
+  ctoContact: Int
+  description: String
+  address: String
+  status: Status
   id: Int!
+  role: Role
+}
+
+input CreateProjectInput {
+  createdUserId: Int
   name: String
   description: String
   status: Status
 }
 
-input UpdateLicenseInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+input UpdateProjectInput {
+  createdUserId: Int
+  name: String
+  description: String
+  status: Status
   id: Int!
+  deletedAt: DateTime
+}
+
+input CreateLicenseInput {
   licenseType: LicenseType
   paymentAmount: Int
-  discountAmount: String
+  discountAmount: Int
   questionAllowed: Int
   projectPerLicense: Int
   discountValidTill: DateTime
+}
+
+input UpdateLicenseInput {
+  licenseType: LicenseType
+  paymentAmount: Int
+  discountAmount: Int
+  questionAllowed: Int
+  projectPerLicense: Int
+  discountValidTill: DateTime
+  id: Int!
   status: Status
 }
 
@@ -423,14 +471,19 @@ input UpdateResultInput {
   id: Int
 }
 
-input UpdateComplianceInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+input CreateComplianceInput {
   name: String
   description: String
   LearnMoreLink: String
   status: Status
+}
+
+input UpdateComplianceInput {
+  name: String
+  description: String
+  LearnMoreLink: String
+  status: Status
+  id: Int!
 }
 
 input UpdateLicenseslaveInput {

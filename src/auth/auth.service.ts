@@ -1,11 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateUserInput } from './dto/create-user.input';
-import { UpdateAuthInput } from './dto/update-auth.input';
-import { GraphQLError, assertWrappingType } from 'graphql';
-import { Prisma, user } from '@prisma/client';
+import { user } from '@prisma/client';
 import { PrismaService } from 'prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { LoginUserInput } from './dto/loginuser.input';
 import { JwtService } from '@nestjs/jwt';
 import { jwtSecret } from 'src/utils/contents';
 
@@ -24,7 +20,11 @@ export class AuthService {
     const hashedPassword = await this.hashPassword(password);
 
     let user = await this.prisma.user.create({
-      data: { email: email, password: hashedPassword },
+      data: {
+        email: email,
+        password: hashedPassword,
+        name: email.split('@')[0],
+      },
     });
 
     const token = await this.singToken({

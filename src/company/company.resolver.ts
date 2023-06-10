@@ -22,6 +22,13 @@ export class CompanyResolver {
   }
 
   @Mutation(() => Company)
+  createCompany(
+    @Args('createCompanyInput') createCompanyInput: CreateCompanyInput,
+  ) {
+    return this.companyService.createCompany(createCompanyInput);
+  }
+
+  @Mutation(() => Company)
   updateCompanyById(
     @Args('updateCompanyInput') updateCompanyInput: UpdateCompanyInput,
   ) {

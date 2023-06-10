@@ -30,6 +30,23 @@ export class PrincipleService {
     return principle;
   }
 
+  async createPrinciple(principle: CreatePrincipleInput) {
+    const dataToCreate: any = {};
+
+    for (const [key, value] of Object.entries(principle)) {
+      if (value) {
+        dataToCreate[key] = value;
+      }
+    }
+
+    const Principle = await this.prisma.principle.create({
+      data: dataToCreate,
+    });
+
+    if (!Principle) throw new BadRequestException('Unable to create principle');
+    return Principle;
+  }
+
   async updatePrincipleById(id: number, principle: UpdatePrincipleInput) {
     const dataToUpdate: {
       [key: string]: any;

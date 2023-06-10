@@ -9,9 +9,9 @@
 /* eslint-disable */
 
 export enum Role {
+    SYSTEM = "SYSTEM",
     ADMIN = "ADMIN",
-    USER = "USER",
-    COMPANY = "COMPANY"
+    USER = "USER"
 }
 
 export enum Status {
@@ -66,15 +66,30 @@ export interface SignUpUserInput {
     password: string;
 }
 
-export interface UpdateQuestionbankInput {
-    exampleField?: Nullable<number>;
-    id: number;
+export interface CreateQuestionbankInput {
+    principleId?: Nullable<number>;
     questionType?: Nullable<QuestionType>;
     questionPlan?: Nullable<LicenseType>;
-    status?: Nullable<Status>;
+    question?: Nullable<string>;
+    description?: Nullable<string>;
+    answer?: Nullable<QuestionAnswerInput[]>;
+}
+
+export interface QuestionAnswerInput {
+    answer: string;
+    mark: number;
+    rec: string;
+}
+
+export interface UpdateQuestionbankInput {
+    principleId?: Nullable<number>;
+    questionType?: Nullable<QuestionType>;
+    questionPlan?: Nullable<LicenseType>;
     question?: Nullable<string>;
     description?: Nullable<string>;
     answer?: Nullable<QuestionAnswer[]>;
+    id: number;
+    status?: Nullable<Status>;
 }
 
 export interface QuestionAnswer {
@@ -83,12 +98,17 @@ export interface QuestionAnswer {
     rec: string;
 }
 
-export interface UpdatePrincipleInput {
-    exampleField?: Nullable<number>;
-    id: number;
+export interface CreatePrincipleInput {
     name?: Nullable<string>;
     description?: Nullable<string>;
     status?: Nullable<Status>;
+}
+
+export interface UpdatePrincipleInput {
+    name?: Nullable<string>;
+    description?: Nullable<string>;
+    status?: Nullable<Status>;
+    id: number;
 }
 
 export interface UpdateUserInput {
@@ -96,44 +116,70 @@ export interface UpdateUserInput {
     id: number;
     name?: Nullable<string>;
     email?: Nullable<string>;
-    contact?: Nullable<string>;
+    contact?: Nullable<number>;
     address?: Nullable<string>;
     profession?: Nullable<string>;
     role?: Nullable<Role>;
     status?: Nullable<Status>;
 }
 
-export interface UpdateCompanyInput {
-    exampleField?: Nullable<number>;
-    id: number;
+export interface CreateCompanyInput {
     name?: Nullable<string>;
     logo?: Nullable<string>;
     website?: Nullable<string>;
     email?: Nullable<string>;
-    ctoContact?: Nullable<string>;
+    ctoContact?: Nullable<number>;
     description?: Nullable<string>;
     address?: Nullable<string>;
-    role?: Nullable<Role>;
     status?: Nullable<Status>;
 }
 
-export interface UpdateProjectInput {
-    exampleField?: Nullable<number>;
+export interface UpdateCompanyInput {
+    name?: Nullable<string>;
+    logo?: Nullable<string>;
+    website?: Nullable<string>;
+    email?: Nullable<string>;
+    ctoContact?: Nullable<number>;
+    description?: Nullable<string>;
+    address?: Nullable<string>;
+    status?: Nullable<Status>;
     id: number;
+    role?: Nullable<Role>;
+}
+
+export interface CreateProjectInput {
+    createdUserId?: Nullable<number>;
     name?: Nullable<string>;
     description?: Nullable<string>;
     status?: Nullable<Status>;
 }
 
-export interface UpdateLicenseInput {
-    exampleField?: Nullable<number>;
+export interface UpdateProjectInput {
+    createdUserId?: Nullable<number>;
+    name?: Nullable<string>;
+    description?: Nullable<string>;
+    status?: Nullable<Status>;
     id: number;
+    deletedAt?: Nullable<DateTime>;
+}
+
+export interface CreateLicenseInput {
     licenseType?: Nullable<LicenseType>;
     paymentAmount?: Nullable<number>;
-    discountAmount?: Nullable<string>;
+    discountAmount?: Nullable<number>;
     questionAllowed?: Nullable<number>;
     projectPerLicense?: Nullable<number>;
     discountValidTill?: Nullable<DateTime>;
+}
+
+export interface UpdateLicenseInput {
+    licenseType?: Nullable<LicenseType>;
+    paymentAmount?: Nullable<number>;
+    discountAmount?: Nullable<number>;
+    questionAllowed?: Nullable<number>;
+    projectPerLicense?: Nullable<number>;
+    discountValidTill?: Nullable<DateTime>;
+    id: number;
     status?: Nullable<Status>;
 }
 
@@ -182,13 +228,19 @@ export interface UpdateResultInput {
     id?: Nullable<number>;
 }
 
-export interface UpdateComplianceInput {
-    exampleField?: Nullable<number>;
-    id: number;
+export interface CreateComplianceInput {
     name?: Nullable<string>;
     description?: Nullable<string>;
     LearnMoreLink?: Nullable<string>;
     status?: Nullable<Status>;
+}
+
+export interface UpdateComplianceInput {
+    name?: Nullable<string>;
+    description?: Nullable<string>;
+    LearnMoreLink?: Nullable<string>;
+    status?: Nullable<Status>;
+    id: number;
 }
 
 export interface UpdateLicenseslaveInput {
@@ -334,7 +386,7 @@ export interface Results {
     totalScore: number;
     resultStatus: Result;
     certified: Status;
-    certificatedId: number;
+    certificatedId: string;
     certificatePrivacy: Status;
     adminComments?: Nullable<string>;
     status: Status;
@@ -446,14 +498,21 @@ export interface IQuery {
 
 export interface IMutation {
     signup(signUpUserInput: SignUpUserInput): Auth | Promise<Auth>;
+    createQuestion(createQuestionbankInput: CreateQuestionbankInput): QuestionBank | Promise<QuestionBank>;
     updateQuestionById(updateQuestionbankInput: UpdateQuestionbankInput): QuestionBank | Promise<QuestionBank>;
+    createPrinciple(createPrincipleInput: CreatePrincipleInput): Principle | Promise<Principle>;
     updatePrincipleById(updatePrincipleInput: UpdatePrincipleInput): Principle | Promise<Principle>;
     updateUserById(updateUserInput: UpdateUserInput): User | Promise<User>;
+    createCompany(createCompanyInput: CreateCompanyInput): Company | Promise<Company>;
     updateCompanyById(updateCompanyInput: UpdateCompanyInput): Company | Promise<Company>;
+    createProject(createProjectInput: CreateProjectInput): Project | Promise<Project>;
     updateProjectById(updateProjectInput: UpdateProjectInput): Project | Promise<Project>;
+    deleteProjectById(updateProjectInput: UpdateProjectInput): Project | Promise<Project>;
+    createLicense(createLicenseInput: CreateLicenseInput): License | Promise<License>;
     updateLicenseById(updateLicenseInput: UpdateLicenseInput): License | Promise<License>;
     createResults(createAnswerInput: CreateAnswerInput, createResultInput: CreateResultInput): Results | Promise<Results>;
     updateResults(updateAnswerInput: UpdateAnswerInput, updateResultInput: UpdateResultInput): Results | Promise<Results>;
+    createCompliance(createComplianceInput: CreateComplianceInput): Compliance | Promise<Compliance>;
     updateComplianceById(updateComplianceInput: UpdateComplianceInput): Compliance | Promise<Compliance>;
     updateLicenseslaveById(updateLicenseslaveInput: UpdateLicenseslaveInput): Licenseslave | Promise<Licenseslave>;
     createFeedback(createFeedbackInput: CreateFeedbackInput): Feedback | Promise<Feedback>;

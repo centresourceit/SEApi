@@ -33,6 +33,23 @@ export class QuestionbankService {
     return question;
   }
 
+  async createQuestion(question: CreateQuestionbankInput) {
+    const dataToCreate: any = {};
+
+    for (const [key, value] of Object.entries(question)) {
+      if (value) {
+        dataToCreate[key] = value;
+      }
+    }
+
+    const Question = await this.prisma.question_bank.create({
+      data: dataToCreate,
+    });
+
+    if (!Question) throw new BadRequestException('Unable to create question');
+    return Question;
+  }
+
   async updateQuestionById(id: number, question: UpdateQuestionbankInput) {
     const dataToUpdate: {
       [key: string]: any;
@@ -56,7 +73,9 @@ export class QuestionbankService {
       where: { id: id },
       data: dataToUpdate,
     });
-    if (!updatedquestion) throw new BadRequestException('Unable to update question.');
+
+    if (!updatedquestion)
+      throw new BadRequestException('Unable to update question.');
     return updatedquestion;
   }
 }

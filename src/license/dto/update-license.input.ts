@@ -18,8 +18,8 @@ export class UpdateLicenseInput extends PartialType(CreateLicenseInput) {
   paymentAmount: number;
 
   @IsOptional()
-  @Field(() => String, { nullable: true })
-  discountAmount: string;
+  @Field(() => Int, { nullable: true })
+  discountAmount: number;
 
   @IsOptional()
   @Field(() => Int, { nullable: true })

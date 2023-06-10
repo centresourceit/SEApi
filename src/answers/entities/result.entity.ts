@@ -1,6 +1,5 @@
 import { ObjectType, Field, Int, registerEnumType } from '@nestjs/graphql';
 import { Status, Result } from '@prisma/client';
-import { Answer } from './answer.entity';
 import { User } from 'src/user/entities/user.entity';
 import { License } from 'src/license/entities/license.entity';
 import { Project } from 'src/project/entities/project.entity';
@@ -35,8 +34,8 @@ export class Results {
   @Field(() => Status)
   certified: Status;
 
-  @Field(() => Int)
-  certificatedId: number;
+  @Field(() => String)
+  certificatedId: string;
 
   @Field(() => Status)
   certificatePrivacy: Status;
