@@ -35,6 +35,27 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type License {
+  id: Int!
+  licenseType: LicenseType!
+  paymentAmount: Int!
+  discountAmount: String!
+  questionAllowed: Int!
+  projectPerLicense: Int
+  discountValidTill: DateTime
+  status: Status!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+}
+
+enum LicenseType {
+  FREE
+  BUSINESS
+  PREMIUM
+  PLATINUM
+}
+
 type Principle {
   id: Int!
   name: String!
@@ -55,15 +76,19 @@ type QuestionAns {
 type QuestionBank {
   id: Int!
   questionType: QuestionType!
-  questionPlan: LicenseType!
+  licensesId: Int!
   status: Status!
   question: String!
   description: String
+  questioncode: String!
+  version: Int!
   answer: [QuestionAns!]!
+  questionRefId: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
   deletedAt: DateTime
   principle: Principle!
+  questionPlan: License!
 }
 
 enum QuestionType {
@@ -71,13 +96,6 @@ enum QuestionType {
   SLIDER
   TANDF
   PERCENTAGE
-}
-
-enum LicenseType {
-  FREE
-  BUSINESS
-  PREMIUM
-  PLATINUM
 }
 
 type User {
@@ -114,20 +132,6 @@ type Project {
   id: Int!
   name: String!
   description: String!
-  status: Status!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  deletedAt: DateTime
-}
-
-type License {
-  id: Int!
-  licenseType: LicenseType!
-  paymentAmount: Int!
-  discountAmount: String!
-  questionAllowed: Int!
-  projectPerLicense: Int
-  discountValidTill: DateTime
   status: Status!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -255,7 +259,7 @@ type Query {
   signout: String!
   getdata: String!
   getAllQuestion: [QuestionBank!]!
-  getAllQuestionById(id: Int!): QuestionBank!
+  getQuestionById(id: Int!): QuestionBank!
   getPrinciple: [Principle!]!
   getPrincipleById(id: Int!): Principle!
   getAllUser: [User!]!
@@ -285,21 +289,28 @@ type Mutation {
   signup(signUpUserInput: SignUpUserInput!): Auth!
   createQuestion(createQuestionbankInput: CreateQuestionbankInput!): QuestionBank!
   updateQuestionById(updateQuestionbankInput: UpdateQuestionbankInput!): QuestionBank!
+  deleteQuestionById(updateQuestionbankInput: UpdateQuestionbankInput!): QuestionBank!
   createPrinciple(createPrincipleInput: CreatePrincipleInput!): Principle!
   updatePrincipleById(updatePrincipleInput: UpdatePrincipleInput!): Principle!
+  deletePrincipleById(updatePrincipleInput: UpdatePrincipleInput!): Principle!
   updateUserById(updateUserInput: UpdateUserInput!): User!
+  deleteUserById(updateUserInput: UpdateUserInput!): User!
   createCompany(createCompanyInput: CreateCompanyInput!): Company!
   updateCompanyById(updateCompanyInput: UpdateCompanyInput!): Company!
+  deleteCompanyById(updateCompanyInput: UpdateCompanyInput!): Company!
   createProject(createProjectInput: CreateProjectInput!): Project!
   updateProjectById(updateProjectInput: UpdateProjectInput!): Project!
   deleteProjectById(updateProjectInput: UpdateProjectInput!): Project!
   createLicense(createLicenseInput: CreateLicenseInput!): License!
   updateLicenseById(updateLicenseInput: UpdateLicenseInput!): License!
+  deleteLicenseById(updateLicenseInput: UpdateLicenseInput!): License!
   createResults(createAnswerInput: CreateAnswerInput!, createResultInput: CreateResultInput!): Results!
   updateResults(updateAnswerInput: UpdateAnswerInput!, updateResultInput: UpdateResultInput!): Results!
   createCompliance(createComplianceInput: CreateComplianceInput!): Compliance!
   updateComplianceById(updateComplianceInput: UpdateComplianceInput!): Compliance!
+  deleteComplianceById(updateComplianceInput: UpdateComplianceInput!): Compliance!
   updateLicenseslaveById(updateLicenseslaveInput: UpdateLicenseslaveInput!): Licenseslave!
+  deleteLicenseSlaveById(updateLicenseslaveInput: UpdateLicenseslaveInput!): Licenseslave!
   createFeedback(createFeedbackInput: CreateFeedbackInput!): Feedback!
 }
 
@@ -309,12 +320,15 @@ input SignUpUserInput {
 }
 
 input CreateQuestionbankInput {
-  principleId: Int
-  questionType: QuestionType
-  questionPlan: LicenseType
-  question: String
-  description: String
-  answer: [QuestionAnswerInput!]
+  principleId: Int!
+  questionType: QuestionType!
+  question: String!
+  description: String!
+  questioncode: String!
+  version: Int!
+  licensesId: Int!
+  answer: [QuestionAnswerInput!]!
+  questionRefId: Int
 }
 
 input QuestionAnswerInput {
@@ -326,12 +340,16 @@ input QuestionAnswerInput {
 input UpdateQuestionbankInput {
   principleId: Int
   questionType: QuestionType
-  questionPlan: LicenseType
   question: String
   description: String
+  questioncode: String!
+  version: Int!
+  licensesId: Int!
   answer: [QuestionAnswer!]
+  questionRefId: Int
   id: Int!
   status: Status
+  deletedAt: DateTime
 }
 
 input QuestionAnswer {
@@ -351,6 +369,7 @@ input UpdatePrincipleInput {
   description: String
   status: Status
   id: Int!
+  deletedAt: DateTime
 }
 
 input UpdateUserInput {
@@ -364,6 +383,7 @@ input UpdateUserInput {
   profession: String
   role: Role
   status: Status
+  deletedAt: DateTime
 }
 
 input CreateCompanyInput {
@@ -388,6 +408,7 @@ input UpdateCompanyInput {
   status: Status
   id: Int!
   role: Role
+  deletedAt: DateTime
 }
 
 input CreateProjectInput {
@@ -424,6 +445,7 @@ input UpdateLicenseInput {
   discountValidTill: DateTime
   id: Int!
   status: Status
+  deletedAt: DateTime
 }
 
 input CreateAnswerInput {
@@ -484,6 +506,7 @@ input UpdateComplianceInput {
   LearnMoreLink: String
   status: Status
   id: Int!
+  deletedAt: DateTime
 }
 
 input UpdateLicenseslaveInput {
@@ -497,6 +520,7 @@ input UpdateLicenseslaveInput {
   paymentReference: String
   paymentAmount: Int
   status: Status
+  deletedAt: DateTime
 }
 
 input CreateFeedbackInput {

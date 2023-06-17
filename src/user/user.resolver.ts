@@ -25,9 +25,15 @@ export class UserResolver {
     return this.userService.getUserById(id);
   }
 
-
   @Mutation(() => User)
   updateUserById(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     return this.userService.updateUserById(updateUserInput.id, updateUserInput);
+  }
+
+  @Mutation(() => User)
+  deleteUserById(
+    @Args('updateUserInput') updateUserInput: UpdateUserInput,
+  ) {
+    return this.userService.deleteUserById(updateUserInput);
   }
 }

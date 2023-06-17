@@ -20,4 +20,8 @@ export class UpdatePrincipleInput extends PartialType(CreatePrincipleInput) {
   @IsOptional()
   @Field(() => Status, { nullable: true })
   status: Status;
+
+  @IsOptional()
+  @Field(() => Date, { nullable: true })
+  deletedAt: Date;
 }

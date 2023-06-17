@@ -27,7 +27,7 @@ export class AnswersService {
         assesement: true,
       },
     });
-    
+
     if (results.length == 0)
       throw new BadRequestException('There is no results');
     return results;

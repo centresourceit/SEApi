@@ -75,7 +75,7 @@ export class ProjectService {
     return updatedproject;
   }
 
-  async deleteProject(project: UpdateProjectInput) {
+  async deleteProjectById(project: UpdateProjectInput) {
     const existing = await this.prisma.project.findUnique({
       where: { id: project.id },
     });

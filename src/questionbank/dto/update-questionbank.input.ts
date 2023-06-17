@@ -28,10 +28,6 @@ export class UpdateQuestionbankInput extends PartialType(
   questionType: QuestionType;
 
   @IsOptional()
-  @Field(() => LicenseType, { nullable: true })
-  questionPlan: LicenseType;
-
-  @IsOptional()
   @Field(() => Status, { nullable: true })
   status: Status;
 
@@ -44,6 +40,22 @@ export class UpdateQuestionbankInput extends PartialType(
   description: string;
 
   @IsOptional()
+  @Field(() => String)
+  questioncode: string;
+
+  @IsOptional()
+  @Field(() => Int)
+  licensesId: number;
+
+  @IsOptional()
+  @Field(() => Int)
+  version: number;
+
+  @IsOptional()
   @Field(() => [QuestionAnswer], { nullable: true })
   answer: [QuestionAnswer];
+
+  @IsOptional()
+  @Field(() => Date, { nullable: true })
+  deletedAt: Date;
 }

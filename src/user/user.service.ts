@@ -3,7 +3,6 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { user } from '@prisma/client';
 import { PrismaService } from 'prisma/prisma.service';
 import { UpdateUserInput } from './dto/update-user.input';
 
@@ -19,6 +18,7 @@ export class UserService {
         assesement_result: true,
         user_license_slave: true,
       },
+      where: { deletedAt: null },
     });
     if (user.length == 0) throw new BadRequestException('There is no user');
     return user;
@@ -26,7 +26,7 @@ export class UserService {
 
   async getUserById(id: number) {
     const user = await this.prisma.user.findFirst({
-      where: { id },
+      where: { id, deletedAt: null },
       include: {
         company: true,
         project: true,
@@ -63,5 +63,21 @@ export class UserService {
     });
     if (!updateduser) throw new BadRequestException('Unable to update.');
     return updateduser;
+  }
+
+  async deleteUserById(user: UpdateUserInput) {
+    const existing = await this.prisma.user.findUnique({
+      where: { id: user.id },
+    });
+
+    if (!existing) {
+      throw new NotFoundException(`User with id ${user.id} not found`);
+    }
+    const deleteUser = this.prisma.user.update({
+      where: { id: user.id },
+      data: { deletedAt: user.deletedAt },
+    });
+    if (!deleteUser) throw new BadRequestException('Unable to update user.');
+    return deleteUser;
   }
 }

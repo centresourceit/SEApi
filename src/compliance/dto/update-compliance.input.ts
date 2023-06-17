@@ -24,4 +24,8 @@ export class UpdateComplianceInput extends PartialType(CreateComplianceInput) {
   @IsOptional()
   @Field(() => Status, { nullable: true })
   status: Status;
+
+  @IsOptional()
+  @Field(() => Date, { nullable: true })
+  deletedAt: Date;
 }

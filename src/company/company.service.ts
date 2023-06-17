@@ -15,6 +15,7 @@ export class CompanyService {
       include: {
         user: true,
       },
+      where: { deletedAt: null },
     });
     if (companys.length == 0)
       throw new BadRequestException('There is no question');
@@ -23,7 +24,7 @@ export class CompanyService {
 
   async getCompanyById(id: number) {
     const company = await this.prisma.company.findFirst({
-      where: { id },
+      where: { id, deletedAt: null },
       include: {
         user: true,
       },
@@ -76,5 +77,24 @@ export class CompanyService {
     if (!updatedlicense)
       throw new BadRequestException('Unable to update Company.');
     return updatedlicense;
+  }
+
+  async deleteCompanyById(company: UpdateCompanyInput) {
+    const existing = await this.prisma.company.findUnique({
+      where: { id: company.id },
+    });
+
+    if (!existing) {
+      throw new NotFoundException(`Company with id ${company.id} not found`);
+    }
+
+    const deleteCompany = this.prisma.company.update({
+      where: { id: company.id },
+      data: { deletedAt: company.deletedAt },
+    });
+
+    if (!deleteCompany)
+      throw new BadRequestException('Unable to update project.');
+    return deleteCompany;
   }
 }

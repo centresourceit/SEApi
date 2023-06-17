@@ -76,18 +76,21 @@ model principle {
 }
 
 model question_bank {
-  id            Int          @id @default(autoincrement())
-  principle     principle    @relation(fields: [principleId], references: [id])
+  id            Int                  @id @default(autoincrement())
+  principle     principle            @relation(fields: [principleId], references: [id])
   principleId   Int
   questionRefId Int?
-  questionType  QuestionType @default(TANDF)
-  questionPlan  LicenseType  @default(FREE)
+  questioncode  String
+  version       Int
+  questionType  QuestionType         @default(TANDF)
+  questionPlan  user_licenses_master @relation(fields: [licensesId], references: [id])
+  licensesId    Int
   question      String
-  description   String?      @db.MediumText
+  description   String?              @db.MediumText
   answer        Json
-  status        Status       @default(ACTIVE)
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  status        Status               @default(ACTIVE)
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
   deletedAt     DateTime?
 }
 
@@ -104,6 +107,7 @@ model user_licenses_master {
   updatedAt          DateTime             @updatedAt
   deletedAt          DateTime?
   user_license_slave user_license_slave[]
+  question_bank      question_bank[]
 }
 
 model user_license_slave {
@@ -126,9 +130,9 @@ model user_license_slave {
 model user {
   id                 Int                  @id @default(autoincrement())
   name               String?
-  email              String               @unique
+  email              String
   password           String
-  contact            BigInt?              @unique
+  contact            BigInt?
   company            company?             @relation(fields: [companyId], references: [id])
   companyId          Int?
   address            String?
@@ -149,7 +153,7 @@ model company {
   name        String
   logo        String
   website     String
-  email       String    @unique
+  email       String
   ctoContact  BigInt
   description String    @db.MediumText
   address     String
@@ -231,4 +235,15 @@ model feedback {
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
   deletedAt      DateTime?
+}
+
+model contact {
+  id          Int       @id @default(autoincrement())
+  name        String
+  email       String
+  description String
+  status      Status    @default(ACTIVE)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
 }

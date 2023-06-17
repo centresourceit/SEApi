@@ -6,6 +6,7 @@ import {
 import { CreateQuestionbankInput } from './dto/create-questionbank.input';
 import { UpdateQuestionbankInput } from './dto/update-questionbank.input';
 import { PrismaService } from 'prisma/prisma.service';
+import { question_bank } from '@prisma/client';
 
 @Injectable()
 export class QuestionbankService {
@@ -13,18 +14,22 @@ export class QuestionbankService {
 
   async getAllQuestion() {
     const questions = await this.prisma.question_bank.findMany({
-      include: { principle: true },
+      include: { principle: true, questionPlan: true },
+      where: { deletedAt: null },
+      orderBy: [{ questionRefId: 'asc' }, { version: 'desc' }],
+      distinct: ['questionRefId'],
     });
     if (questions.length == 0)
       throw new BadRequestException('There is no question');
     return questions;
   }
 
-  async getAllQuestionById(id: number) {
+  async getQuestionById(id: number) {
     const question = await this.prisma.question_bank.findFirst({
-      where: { id },
+      where: { id, deletedAt: null },
       include: {
         principle: true,
+        questionPlan: true,
       },
     });
     if (!question)
@@ -42,11 +47,22 @@ export class QuestionbankService {
       }
     }
 
-    const Question = await this.prisma.question_bank.create({
+    const Question: question_bank = await this.prisma.question_bank.create({
       data: dataToCreate,
     });
 
     if (!Question) throw new BadRequestException('Unable to create question');
+
+    if (question.questionRefId == null || question.questionRefId == undefined) {
+      const updatedquestion = this.prisma.question_bank.update({
+        where: { id: Question.id },
+        data: { questionRefId: Question.id },
+      });
+
+      if (!updatedquestion)
+        throw new BadRequestException('Unable to set question refrance id.');
+      return updatedquestion;
+    }
     return Question;
   }
 
@@ -77,5 +93,24 @@ export class QuestionbankService {
     if (!updatedquestion)
       throw new BadRequestException('Unable to update question.');
     return updatedquestion;
+  }
+
+  async deleteQuestionById(question: UpdateQuestionbankInput) {
+    const existing = await this.prisma.question_bank.findUnique({
+      where: { id: question.id },
+    });
+
+    if (!existing) {
+      throw new NotFoundException(`Question with id ${question.id} not found`);
+    }
+
+    const deleteQuesion = this.prisma.question_bank.update({
+      where: { id: question.id },
+      data: { deletedAt: question.deletedAt },
+    });
+
+    if (!deleteQuesion)
+      throw new BadRequestException('Unable to update question.');
+    return deleteQuesion;
   }
 }

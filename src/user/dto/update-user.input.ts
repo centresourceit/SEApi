@@ -36,4 +36,8 @@ export class UpdateUserInput extends PartialType(CreateUserInput) {
   @IsOptional()
   @Field(() => Status, { nullable: true })
   status: Status;
+
+  @IsOptional()
+  @Field(() => Date, { nullable: true })
+  deletedAt: Date;
 }

@@ -13,6 +13,7 @@ export class LicenseslaveService {
   async getAllLicenseslave() {
     const license = await this.prisma.user_license_slave.findMany({
       include: { user: true, licenseType: true },
+      where: { deletedAt: null },
     });
     if (license.length == 0)
       throw new BadRequestException('There is no license.');
@@ -21,7 +22,7 @@ export class LicenseslaveService {
 
   async getAllLicenseslaveById(id: number) {
     const license = await this.prisma.user_license_slave.findFirst({
-      where: { id },
+      where: { id, deletedAt: null },
       include: { user: true, licenseType: true },
     });
     if (!license)
@@ -57,5 +58,24 @@ export class LicenseslaveService {
     if (!updatedlicense)
       throw new BadRequestException('Unable to update Licenseslave.');
     return updatedlicense;
+  }
+
+  async deleteLicenseSlaveById(slave: UpdateLicenseslaveInput) {
+    const existing = await this.prisma.user_license_slave.findUnique({
+      where: { id: slave.id },
+    });
+
+    if (!existing) {
+      throw new NotFoundException(`Licenseslave with id ${slave.id} not found`);
+    }
+
+    const deleteLicenseslave = this.prisma.user_license_slave.update({
+      where: { id: slave.id },
+      data: { deletedAt: slave.deletedAt },
+    });
+
+    if (!deleteLicenseslave)
+      throw new BadRequestException('Unable to update licenseslave.');
+    return deleteLicenseslave;
   }
 }

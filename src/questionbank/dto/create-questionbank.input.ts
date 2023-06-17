@@ -17,26 +17,38 @@ export class QuestionAnswerInput {
 @InputType()
 export class CreateQuestionbankInput {
   @IsNotEmpty()
-  @Field(() => Int, { nullable: true })
+  @Field(() => Int)
   principleId: number;
 
   @IsNotEmpty()
-  @Field(() => QuestionType, { nullable: true })
+  @Field(() => QuestionType)
   questionType: QuestionType;
 
   @IsNotEmpty()
-  @Field(() => LicenseType, { nullable: true })
-  questionPlan: LicenseType;
-
-  @IsNotEmpty()
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   question: string;
 
   @IsNotEmpty()
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   description: string;
 
   @IsNotEmpty()
-  @Field(() => [QuestionAnswerInput], { nullable: true })
+  @Field(() => String)
+  questioncode: string;
+
+  @IsOptional()
+  @Field(() => Int)
+  version: number;
+
+  @IsNotEmpty()
+  @Field(() => Int)
+  licensesId: number;
+
+  @IsNotEmpty()
+  @Field(() => [QuestionAnswerInput])
   answer: [QuestionAnswerInput];
+
+  @IsOptional()
+  @Field(() => Int, { nullable: true })
+  questionRefId: number;
 }

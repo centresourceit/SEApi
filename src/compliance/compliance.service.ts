@@ -12,7 +12,9 @@ export class ComplianceService {
   constructor(private readonly prisma: PrismaService) {}
 
   async getAllCompliances() {
-    const compliance = await this.prisma.compliance.findMany();
+    const compliance = await this.prisma.compliance.findMany({
+      where: { deletedAt: null },
+    });
     if (compliance.length == 0)
       throw new BadRequestException('There is no compliance.');
     return compliance;
@@ -20,7 +22,7 @@ export class ComplianceService {
 
   async getAllCompliancesById(id: number) {
     const compliance = await this.prisma.compliance.findFirst({
-      where: { id },
+      where: { id, deletedAt: null },
     });
     if (!compliance)
       throw new BadRequestException('No compliance exist with this id.');
@@ -71,5 +73,25 @@ export class ComplianceService {
     if (!updatedcompliance)
       throw new BadRequestException('Unable to update compliance.');
     return updatedcompliance;
+  }
+
+  async deleteComplianceById(compliance: UpdateComplianceInput) {
+    const existing = await this.prisma.compliance.findUnique({
+      where: { id: compliance.id },
+    });
+
+    if (!existing) {
+      throw new NotFoundException(
+        `Compliance with id ${compliance.id} not found`,
+      );
+    }
+    const deleteCompliance = this.prisma.compliance.update({
+      where: { id: compliance.id },
+      data: { deletedAt: compliance.deletedAt },
+    });
+
+    if (!deleteCompliance)
+      throw new BadRequestException('Unable to update compliance.');
+    return deleteCompliance;
   }
 }

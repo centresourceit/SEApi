@@ -31,4 +31,11 @@ export class LicenseslaveResolver {
       updateLicenseslaveInput,
     );
   }
+
+  @Mutation(() => Licenseslave)
+  deleteLicenseSlaveById(
+    @Args('updateLicenseslaveInput') updateLicenseslaveInput: UpdateLicenseslaveInput,
+  ) {
+    return this.licenseslaveService.deleteLicenseSlaveById(updateLicenseslaveInput);
+  }
 }

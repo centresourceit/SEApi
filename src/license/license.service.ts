@@ -12,7 +12,9 @@ export class LicenseService {
   constructor(private readonly prisma: PrismaService) {}
 
   async getAllLicense() {
-    const license = await this.prisma.user_licenses_master.findMany();
+    const license = await this.prisma.user_licenses_master.findMany({
+      where: { deletedAt: null },
+    });
     if (license.length == 0)
       throw new BadRequestException('There is no license.');
     return license;
@@ -20,7 +22,7 @@ export class LicenseService {
 
   async getAllLicenseById(id: number) {
     const license = await this.prisma.user_licenses_master.findFirst({
-      where: { id },
+      where: { id, deletedAt: null },
     });
     if (!license)
       throw new BadRequestException('No license exist with this id.');
@@ -68,7 +70,26 @@ export class LicenseService {
       data: dataToUpdate,
     });
     if (!updatedlicense)
-      throw new BadRequestException('Unable to update Licenses.');
+      throw new BadRequestException('Unable to update License.');
     return updatedlicense;
+  }
+
+  async deleteLicenseById(license: UpdateLicenseInput) {
+    const existing = await this.prisma.user_licenses_master.findUnique({
+      where: { id: license.id },
+    });
+
+    if (!existing) {
+      throw new NotFoundException(`License with id ${license.id} not found`);
+    }
+
+    const deleteLicense = this.prisma.user_licenses_master.update({
+      where: { id: license.id },
+      data: { deletedAt: license.deletedAt },
+    });
+
+    if (!deleteLicense)
+      throw new BadRequestException('Unable to update license.');
+    return deleteLicense;
   }
 }

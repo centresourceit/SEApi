@@ -36,4 +36,8 @@ export class UpdateLicenseInput extends PartialType(CreateLicenseInput) {
   @IsOptional()
   @Field(() => Status, { nullable: true })
   status: Status;
+
+  @IsOptional()
+  @Field(() => Date, { nullable: true })
+  deletedAt: Date;
 }

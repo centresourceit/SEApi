@@ -37,4 +37,11 @@ export class CompanyResolver {
       updateCompanyInput,
     );
   }
+
+  @Mutation(() => Company)
+  deleteCompanyById(
+    @Args('updateCompanyInput') updateCompanyInput: UpdateCompanyInput,
+  ) {
+    return this.companyService.deleteCompanyById(updateCompanyInput);
+  }
 }

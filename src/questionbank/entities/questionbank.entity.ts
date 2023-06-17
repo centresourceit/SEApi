@@ -1,6 +1,7 @@
 import { ObjectType, Field, Int, registerEnumType } from '@nestjs/graphql';
 import { LicenseType, QuestionType, Status } from '@prisma/client';
 import { GraphQLScalarType } from 'graphql';
+import { License } from 'src/license/entities/license.entity';
 import { Principle } from 'src/principle/entities/principle.entity';
 
 registerEnumType(QuestionType, {
@@ -31,8 +32,8 @@ export class QuestionBank {
   @Field(() => QuestionType)
   questionType: QuestionType;
 
-  @Field(() => LicenseType)
-  questionPlan: LicenseType;
+  @Field(() => Int)
+  licensesId: number;
 
   @Field(() => Status)
   status: Status;
@@ -43,8 +44,17 @@ export class QuestionBank {
   @Field(() => String, { nullable: true })
   description: string;
 
+  @Field(() => String)
+  questioncode: string;
+
+  @Field(() => Int)
+  version: number;
+
   @Field(() => [QuestionAns])
   answer: [QuestionAns];
+
+  @Field(() => Int)
+  questionRefId: number;
 
   @Field(() => Date)
   createdAt: Date;
@@ -57,4 +67,7 @@ export class QuestionBank {
 
   @Field(() => Principle)
   principle: Principle;
+
+  @Field(() => License)
+  questionPlan: License;
 }

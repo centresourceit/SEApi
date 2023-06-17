@@ -13,6 +13,7 @@ export class PrincipleService {
   async getPrinciple() {
     const principles = await this.prisma.principle.findMany({
       include: { question_bank: true },
+      where: { deletedAt: null },
     });
 
     if (principles.length == 0)
@@ -22,7 +23,7 @@ export class PrincipleService {
 
   async getPrincipleById(id: number) {
     const principle = await this.prisma.principle.findFirst({
-      where: { id },
+      where: { id, deletedAt: null },
       include: { question_bank: true },
     });
     if (!principle)
@@ -73,5 +74,26 @@ export class PrincipleService {
     if (!updatedprinciple)
       throw new BadRequestException('Unable to update Principle.');
     return updatedprinciple;
+  }
+
+  async deletePrincipleById(principle: UpdatePrincipleInput) {
+    const existing = await this.prisma.principle.findUnique({
+      where: { id: principle.id },
+    });
+
+    if (!existing) {
+      throw new NotFoundException(
+        `Principle with id ${principle.id} not found`,
+      );
+    }
+
+    const deletePrinciple = this.prisma.principle.update({
+      where: { id: principle.id },
+      data: { deletedAt: principle.deletedAt },
+    });
+
+    if (!deletePrinciple)
+      throw new BadRequestException('Unable to update principle.');
+    return deletePrinciple;
   }
 }

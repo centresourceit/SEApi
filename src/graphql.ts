@@ -19,18 +19,18 @@ export enum Status {
     INACTIVE = "INACTIVE"
 }
 
-export enum QuestionType {
-    MCQ = "MCQ",
-    SLIDER = "SLIDER",
-    TANDF = "TANDF",
-    PERCENTAGE = "PERCENTAGE"
-}
-
 export enum LicenseType {
     FREE = "FREE",
     BUSINESS = "BUSINESS",
     PREMIUM = "PREMIUM",
     PLATINUM = "PLATINUM"
+}
+
+export enum QuestionType {
+    MCQ = "MCQ",
+    SLIDER = "SLIDER",
+    TANDF = "TANDF",
+    PERCENTAGE = "PERCENTAGE"
 }
 
 export enum Result {
@@ -67,12 +67,15 @@ export interface SignUpUserInput {
 }
 
 export interface CreateQuestionbankInput {
-    principleId?: Nullable<number>;
-    questionType?: Nullable<QuestionType>;
-    questionPlan?: Nullable<LicenseType>;
-    question?: Nullable<string>;
-    description?: Nullable<string>;
-    answer?: Nullable<QuestionAnswerInput[]>;
+    principleId: number;
+    questionType: QuestionType;
+    question: string;
+    description: string;
+    questioncode: string;
+    version: number;
+    licensesId: number;
+    answer: QuestionAnswerInput[];
+    questionRefId?: Nullable<number>;
 }
 
 export interface QuestionAnswerInput {
@@ -84,12 +87,16 @@ export interface QuestionAnswerInput {
 export interface UpdateQuestionbankInput {
     principleId?: Nullable<number>;
     questionType?: Nullable<QuestionType>;
-    questionPlan?: Nullable<LicenseType>;
     question?: Nullable<string>;
     description?: Nullable<string>;
+    questioncode: string;
+    version: number;
+    licensesId: number;
     answer?: Nullable<QuestionAnswer[]>;
+    questionRefId?: Nullable<number>;
     id: number;
     status?: Nullable<Status>;
+    deletedAt?: Nullable<DateTime>;
 }
 
 export interface QuestionAnswer {
@@ -109,6 +116,7 @@ export interface UpdatePrincipleInput {
     description?: Nullable<string>;
     status?: Nullable<Status>;
     id: number;
+    deletedAt?: Nullable<DateTime>;
 }
 
 export interface UpdateUserInput {
@@ -121,6 +129,7 @@ export interface UpdateUserInput {
     profession?: Nullable<string>;
     role?: Nullable<Role>;
     status?: Nullable<Status>;
+    deletedAt?: Nullable<DateTime>;
 }
 
 export interface CreateCompanyInput {
@@ -145,6 +154,7 @@ export interface UpdateCompanyInput {
     status?: Nullable<Status>;
     id: number;
     role?: Nullable<Role>;
+    deletedAt?: Nullable<DateTime>;
 }
 
 export interface CreateProjectInput {
@@ -181,6 +191,7 @@ export interface UpdateLicenseInput {
     discountValidTill?: Nullable<DateTime>;
     id: number;
     status?: Nullable<Status>;
+    deletedAt?: Nullable<DateTime>;
 }
 
 export interface CreateAnswerInput {
@@ -241,6 +252,7 @@ export interface UpdateComplianceInput {
     LearnMoreLink?: Nullable<string>;
     status?: Nullable<Status>;
     id: number;
+    deletedAt?: Nullable<DateTime>;
 }
 
 export interface UpdateLicenseslaveInput {
@@ -253,6 +265,7 @@ export interface UpdateLicenseslaveInput {
     paymentReference?: Nullable<string>;
     paymentAmount?: Nullable<number>;
     status?: Nullable<Status>;
+    deletedAt?: Nullable<DateTime>;
 }
 
 export interface CreateFeedbackInput {
@@ -292,6 +305,20 @@ export interface Auth {
     deletedAt?: Nullable<DateTime>;
 }
 
+export interface License {
+    id: number;
+    licenseType: LicenseType;
+    paymentAmount: number;
+    discountAmount: string;
+    questionAllowed: number;
+    projectPerLicense?: Nullable<number>;
+    discountValidTill?: Nullable<DateTime>;
+    status: Status;
+    createdAt: DateTime;
+    updatedAt: DateTime;
+    deletedAt?: Nullable<DateTime>;
+}
+
 export interface Principle {
     id: number;
     name: string;
@@ -312,15 +339,19 @@ export interface QuestionAns {
 export interface QuestionBank {
     id: number;
     questionType: QuestionType;
-    questionPlan: LicenseType;
+    licensesId: number;
     status: Status;
     question: string;
     description?: Nullable<string>;
+    questioncode: string;
+    version: number;
     answer: QuestionAns[];
+    questionRefId: number;
     createdAt: DateTime;
     updatedAt: DateTime;
     deletedAt?: Nullable<DateTime>;
     principle: Principle;
+    questionPlan: License;
 }
 
 export interface User {
@@ -357,20 +388,6 @@ export interface Project {
     id: number;
     name: string;
     description: string;
-    status: Status;
-    createdAt: DateTime;
-    updatedAt: DateTime;
-    deletedAt?: Nullable<DateTime>;
-}
-
-export interface License {
-    id: number;
-    licenseType: LicenseType;
-    paymentAmount: number;
-    discountAmount: string;
-    questionAllowed: number;
-    projectPerLicense?: Nullable<number>;
-    discountValidTill?: Nullable<DateTime>;
     status: Status;
     createdAt: DateTime;
     updatedAt: DateTime;
@@ -475,7 +492,7 @@ export interface IQuery {
     signout(): string | Promise<string>;
     getdata(): string | Promise<string>;
     getAllQuestion(): QuestionBank[] | Promise<QuestionBank[]>;
-    getAllQuestionById(id: number): QuestionBank | Promise<QuestionBank>;
+    getQuestionById(id: number): QuestionBank | Promise<QuestionBank>;
     getPrinciple(): Principle[] | Promise<Principle[]>;
     getPrincipleById(id: number): Principle | Promise<Principle>;
     getAllUser(): User[] | Promise<User[]>;
@@ -500,21 +517,28 @@ export interface IMutation {
     signup(signUpUserInput: SignUpUserInput): Auth | Promise<Auth>;
     createQuestion(createQuestionbankInput: CreateQuestionbankInput): QuestionBank | Promise<QuestionBank>;
     updateQuestionById(updateQuestionbankInput: UpdateQuestionbankInput): QuestionBank | Promise<QuestionBank>;
+    deleteQuestionById(updateQuestionbankInput: UpdateQuestionbankInput): QuestionBank | Promise<QuestionBank>;
     createPrinciple(createPrincipleInput: CreatePrincipleInput): Principle | Promise<Principle>;
     updatePrincipleById(updatePrincipleInput: UpdatePrincipleInput): Principle | Promise<Principle>;
+    deletePrincipleById(updatePrincipleInput: UpdatePrincipleInput): Principle | Promise<Principle>;
     updateUserById(updateUserInput: UpdateUserInput): User | Promise<User>;
+    deleteUserById(updateUserInput: UpdateUserInput): User | Promise<User>;
     createCompany(createCompanyInput: CreateCompanyInput): Company | Promise<Company>;
     updateCompanyById(updateCompanyInput: UpdateCompanyInput): Company | Promise<Company>;
+    deleteCompanyById(updateCompanyInput: UpdateCompanyInput): Company | Promise<Company>;
     createProject(createProjectInput: CreateProjectInput): Project | Promise<Project>;
     updateProjectById(updateProjectInput: UpdateProjectInput): Project | Promise<Project>;
     deleteProjectById(updateProjectInput: UpdateProjectInput): Project | Promise<Project>;
     createLicense(createLicenseInput: CreateLicenseInput): License | Promise<License>;
     updateLicenseById(updateLicenseInput: UpdateLicenseInput): License | Promise<License>;
+    deleteLicenseById(updateLicenseInput: UpdateLicenseInput): License | Promise<License>;
     createResults(createAnswerInput: CreateAnswerInput, createResultInput: CreateResultInput): Results | Promise<Results>;
     updateResults(updateAnswerInput: UpdateAnswerInput, updateResultInput: UpdateResultInput): Results | Promise<Results>;
     createCompliance(createComplianceInput: CreateComplianceInput): Compliance | Promise<Compliance>;
     updateComplianceById(updateComplianceInput: UpdateComplianceInput): Compliance | Promise<Compliance>;
+    deleteComplianceById(updateComplianceInput: UpdateComplianceInput): Compliance | Promise<Compliance>;
     updateLicenseslaveById(updateLicenseslaveInput: UpdateLicenseslaveInput): Licenseslave | Promise<Licenseslave>;
+    deleteLicenseSlaveById(updateLicenseslaveInput: UpdateLicenseslaveInput): Licenseslave | Promise<Licenseslave>;
     createFeedback(createFeedbackInput: CreateFeedbackInput): Feedback | Promise<Feedback>;
 }
 

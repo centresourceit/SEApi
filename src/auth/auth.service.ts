@@ -13,7 +13,7 @@ export class AuthService {
   ) {}
 
   async signup(email: string, password: string) {
-    const foundUser: user = await this.prisma.user.findUnique({
+    const foundUser: user = await this.prisma.user.findFirst({
       where: { email },
     });
     if (foundUser) throw new BadRequestException('email already exist');
@@ -37,7 +37,7 @@ export class AuthService {
   }
 
   async signin(email: string, password: string) {
-    const user: user = await this.prisma.user.findUnique({
+    const user: user = await this.prisma.user.findFirst({
       where: { email: email },
     });
     if (!user) throw new BadRequestException('Wrong Credentials');
@@ -58,7 +58,7 @@ export class AuthService {
   async signout() {}
 
   async findUserByEmail(email: string): Promise<user> {
-    const user: user = await this.prisma.user.findUnique({
+    const user: user = await this.prisma.user.findFirst({
       where: { email: email },
     });
     return user;

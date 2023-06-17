@@ -17,8 +17,8 @@ export class QuestionbankResolver {
   }
 
   @Query(() => QuestionBank)
-  getAllQuestionById(@Args('id', { type: () => Int }) id: number) {
-    return this.questionbankService.getAllQuestionById(id);
+  getQuestionById(@Args('id', { type: () => Int }) id: number) {
+    return this.questionbankService.getQuestionById(id);
   }
 
   @Mutation(() => QuestionBank)
@@ -38,5 +38,12 @@ export class QuestionbankResolver {
       updateQuestionbankInput.id,
       updateQuestionbankInput,
     );
+  }
+
+  @Mutation(() => QuestionBank)
+  deleteQuestionById(
+    @Args('updateQuestionbankInput') updateQuestionbankInput: UpdateQuestionbankInput,
+  ) {
+    return this.questionbankService.deleteQuestionById(updateQuestionbankInput);
   }
 }

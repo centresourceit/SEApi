@@ -42,6 +42,6 @@ export class ProjectResolver {
   deleteProjectById(
     @Args('updateProjectInput') updateProjectInput: UpdateProjectInput,
   ) {
-    return this.projectService.deleteProject(updateProjectInput);
+    return this.projectService.deleteProjectById(updateProjectInput);
   }
 }

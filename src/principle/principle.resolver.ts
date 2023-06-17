@@ -37,4 +37,11 @@ export class PrincipleResolver {
       updatePrincipleInput,
     );
   }
+
+  @Mutation(() => Principle)
+  deletePrincipleById(
+    @Args('updatePrincipleInput') updatePrincipleInput: UpdatePrincipleInput,
+  ) {
+    return this.principleService.deletePrincipleById(updatePrincipleInput);
+  }
 }

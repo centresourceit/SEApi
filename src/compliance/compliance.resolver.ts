@@ -37,4 +37,11 @@ export class ComplianceResolver {
       updateComplianceInput,
     );
   }
+
+  @Mutation(() => Compliance)
+  deleteComplianceById(
+    @Args('updateComplianceInput') updateComplianceInput: UpdateComplianceInput,
+  ) {
+    return this.complianceService.deleteComplianceById(updateComplianceInput);
+  }
 }

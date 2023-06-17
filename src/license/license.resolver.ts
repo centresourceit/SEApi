@@ -37,4 +37,11 @@ export class LicenseResolver {
       updateLicenseInput,
     );
   }
+
+  @Mutation(() => License)
+  deleteLicenseById(
+    @Args('updateLicenseInput') updateLicenseInput: UpdateLicenseInput,
+  ) {
+    return this.licenseService.deleteLicenseById(updateLicenseInput);
+  }
 }
