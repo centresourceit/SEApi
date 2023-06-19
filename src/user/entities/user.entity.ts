@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { ObjectType, Field, Int, Float } from '@nestjs/graphql';
 import { Role, Status } from '@prisma/client';
 
 @ObjectType()
@@ -6,20 +6,20 @@ export class User {
   @Field(() => Int)
   id: number;
 
-  @Field(() => String,{nullable:true})
-  name: String;
+  @Field(() => String, { nullable: true })
+  name: string;
 
-  @Field(() => String,{nullable:true})
-  email: String;
+  @Field(() => String, { nullable: true })
+  email: string;
 
-  @Field(() => String,{nullable:true})
-  contact: String;
+  @Field(() => Float, { nullable: true })
+  contact: number;
 
-  @Field(() => String,{nullable:true})
-  address: String;
+  @Field(() => String, { nullable: true })
+  address: string;
 
-  @Field(() => String,{nullable:true})
-  profession: String;
+  @Field(() => String, { nullable: true })
+  profession: string;
 
   @Field(() => Role)
   role: Role;

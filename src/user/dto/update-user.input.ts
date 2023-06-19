@@ -1,6 +1,6 @@
 import { Role, Status } from '@prisma/client';
 import { CreateUserInput } from './create-user.input';
-import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
+import { InputType, Field, Int, PartialType, Float } from '@nestjs/graphql';
 import { IsNotEmpty, IsOptional } from 'class-validator';
 
 @InputType()
@@ -18,7 +18,7 @@ export class UpdateUserInput extends PartialType(CreateUserInput) {
   email: string;
 
   @IsOptional()
-  @Field(() => Int, { nullable: true })
+  @Field(() => Float, { nullable: true })
   contact: number;
 
   @IsOptional()

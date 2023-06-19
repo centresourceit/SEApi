@@ -1,6 +1,6 @@
 import { Role, Status } from '@prisma/client';
 import { CreateCompanyInput } from './create-company.input';
-import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
+import { InputType, Field, Int, PartialType, Float } from '@nestjs/graphql';
 import { IsNotEmpty, IsOptional } from 'class-validator';
 
 @InputType()
@@ -26,7 +26,7 @@ export class UpdateCompanyInput extends PartialType(CreateCompanyInput) {
   email: string;
 
   @IsOptional()
-  @Field(() => Int, { nullable: true })
+  @Field(() => Float, { nullable: true })
   ctoContact: number;
 
   @IsOptional()

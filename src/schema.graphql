@@ -102,7 +102,7 @@ type User {
   id: Int!
   name: String
   email: String
-  contact: String
+  contact: Float
   address: String
   profession: String
   role: Role!
@@ -118,7 +118,7 @@ type Company {
   logo: String
   website: String
   email: String
-  ctoContact: String
+  ctoContact: Float
   description: String
   address: String
   role: Role!
@@ -378,7 +378,7 @@ input UpdateUserInput {
   id: Int!
   name: String
   email: String
-  contact: Int
+  contact: Float
   address: String
   profession: String
   role: Role
@@ -388,10 +388,10 @@ input UpdateUserInput {
 
 input CreateCompanyInput {
   name: String
-  logo: String
   website: String
+  logo: String
   email: String
-  ctoContact: Int
+  ctoContact: Float
   description: String
   address: String
   status: Status
@@ -399,10 +399,10 @@ input CreateCompanyInput {
 
 input UpdateCompanyInput {
   name: String
-  logo: String
   website: String
+  logo: String
   email: String
-  ctoContact: Int
+  ctoContact: Float
   description: String
   address: String
   status: Status
