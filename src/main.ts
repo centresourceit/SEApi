@@ -1,29 +1,25 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import helmet from 'helmet';
 import { ValidationPipe } from '@nestjs/common';
-
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 async function bootstrap() {
-  const graphqlUploadExpress = (
-    await import('graphql-upload/graphqlUploadExpress.mjs')
-  ).default;
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    cors: true,
+  });
+  const cwd = process.cwd();
 
-  const app = await NestFactory.create(AppModule, { cors: true });
-  // app.use(helmet());
+  // app.useStaticAssets(join(cwd, '/assets'));
 
   //global validation
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
-
-  app.use(
-    '/graphql',
-    graphqlUploadExpress({ maxFileSize: 50000000, maxFiles: 10 }),
-  );
 
   app.enableCors({
     origin: true,
     credentials: true,
   });
-
   await app.listen(5573);
+  console.log(`Application is running on: ${await app.getUrl()}`);
+  // console.log(join(cwd, '/assets/images'));
 }
 bootstrap();

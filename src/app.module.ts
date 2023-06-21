@@ -17,8 +17,16 @@ import { AnswersModule } from './answers/answers.module';
 import { ComplianceModule } from './compliance/compliance.module';
 import { LicenseslaveModule } from './licenseslave/licenseslave.module';
 import { FeedbackModule } from './feedback/feedback.module';
+import { UploaderModule } from './uploader/uploader.module';
+
+import { ServeStaticModule } from '@nestjs/serve-static';
+
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '../public'), // added ../ to get one folder back
+      serveRoot: '/public/', //last slash was important
+    }),
     PrismaModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
@@ -40,6 +48,7 @@ import { FeedbackModule } from './feedback/feedback.module';
     ComplianceModule,
     LicenseslaveModule,
     FeedbackModule,
+    UploaderModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

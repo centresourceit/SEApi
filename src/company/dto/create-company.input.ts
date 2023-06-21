@@ -5,36 +5,6 @@ import { GraphQLScalarType } from 'graphql/type';
 import { async } from 'rxjs';
 import { Stream } from 'stream';
 
-// let fileUploader: GraphQLScalarType = undefined;
-
-// const GraphQLUpload = async () => {
-//   return (await import('graphql-upload/GraphQLUpload.mjs')).default;
-// };
-
-// const upload = GraphQLUpload();
-// upload.then((val) => (fileUploader = val));
-
-let fileUploader: GraphQLScalarType = undefined;
-
-const GraphQLUpload = () => {
-  return import('graphql-upload/GraphQLUpload.mjs').then(
-    (module) => module.default,
-  );
-};
-
-const upload = async () => {
-  const val = await GraphQLUpload();
-  fileUploader = val;
-};
-upload();
-
-interface FileUpload {
-  filename: string;
-  mimetype: string;
-  encoding: string;
-  createReadStream: () => Stream;
-}
-
 @InputType()
 export class CreateCompanyInput {
   @IsNotEmpty()
@@ -68,8 +38,4 @@ export class CreateCompanyInput {
   @IsOptional()
   @Field(() => Status, { nullable: true })
   status: Status;
-
-  // @IsNotEmpty()
-  // @Field(() => fileUploader)
-  // image: Promise<FileUpload>;
 }

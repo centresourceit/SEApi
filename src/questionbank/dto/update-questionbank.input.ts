@@ -40,15 +40,15 @@ export class UpdateQuestionbankInput extends PartialType(
   description: string;
 
   @IsOptional()
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   questioncode: string;
 
   @IsOptional()
-  @Field(() => Int)
+  @Field(() => Int, { nullable: true })
   licensesId: number;
 
   @IsOptional()
-  @Field(() => Int)
+  @Field(() => Int, { nullable: true })
   version: number;
 
   @IsOptional()

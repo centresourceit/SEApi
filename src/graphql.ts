@@ -89,9 +89,9 @@ export interface UpdateQuestionbankInput {
     questionType?: Nullable<QuestionType>;
     question?: Nullable<string>;
     description?: Nullable<string>;
-    questioncode: string;
-    version: number;
-    licensesId: number;
+    questioncode?: Nullable<string>;
+    version?: Nullable<number>;
+    licensesId?: Nullable<number>;
     answer?: Nullable<QuestionAnswer[]>;
     questionRefId?: Nullable<number>;
     id: number;

@@ -12,7 +12,13 @@ export class PrincipleService {
   constructor(private readonly prisma: PrismaService) {}
   async getPrinciple() {
     const principles = await this.prisma.principle.findMany({
-      include: { question_bank: true },
+      include: {
+        question_bank: {
+          where: { deletedAt: null },
+          orderBy: [{ questionRefId: 'asc' }, { version: 'desc' }],
+          distinct: ['questionRefId'],
+        },
+      },
       where: { deletedAt: null },
     });
 

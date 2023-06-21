@@ -342,9 +342,9 @@ input UpdateQuestionbankInput {
   questionType: QuestionType
   question: String
   description: String
-  questioncode: String!
-  version: Int!
-  licensesId: Int!
+  questioncode: String
+  version: Int
+  licensesId: Int
   answer: [QuestionAnswer!]
   questionRefId: Int
   id: Int!
