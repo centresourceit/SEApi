@@ -3,6 +3,7 @@ import { Status, Result } from '@prisma/client';
 import { User } from 'src/user/entities/user.entity';
 import { License } from 'src/license/entities/license.entity';
 import { Project } from 'src/project/entities/project.entity';
+import { Answer } from './answer.entity';
 
 registerEnumType(Result, {
   name: 'Result',
@@ -63,4 +64,7 @@ export class Results {
 
   @Field(() => Project)
   project: Project;
+
+  @Field(() => Answer)
+  assesement: Answer;
 }

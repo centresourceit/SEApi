@@ -4,11 +4,11 @@ import { UpdateAnswerInput } from './dto/update-answer.input';
 import { PrismaService } from 'prisma/prisma.service';
 import { CreateResultInput } from './dto/create-result.input';
 import { UpdateResultInput } from './dto/update-result.input';
+import { SearchResultInput } from './dto/search-result.input';
 
 @Injectable()
 export class AnswersService {
   constructor(private readonly prisma: PrismaService) {}
-
   async getAllAnswers() {
     const answers = await this.prisma.assesement_result_revised.findMany({
       include: { assesement_result: true },
@@ -20,6 +20,23 @@ export class AnswersService {
 
   async getAllResults() {
     const results = await this.prisma.assesement_result.findMany({
+      include: {
+        user: true,
+        license: true,
+        project: true,
+        assesement: true,
+      },
+    });
+
+    if (results.length == 0)
+      throw new BadRequestException('There is no results');
+
+    return results;
+  }
+
+  async searchResult(searchResultInput: SearchResultInput) {
+    const results = await this.prisma.assesement_result.findMany({
+      where: searchResultInput,
       include: {
         user: true,
         license: true,

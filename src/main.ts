@@ -7,9 +7,8 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: true,
   });
-  const cwd = process.cwd();
-
-  // app.useStaticAssets(join(cwd, '/assets'));
+  // const cwd = process.cwd();
+  // app.useStaticAssets(join(cwd, '/public'));
 
   //global validation
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));

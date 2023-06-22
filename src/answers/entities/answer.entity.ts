@@ -31,11 +31,8 @@ export class Answer {
   @Field(() => Int)
   id: number;
 
-  @Field(() => Int)
-  assesmentId: number;
-
   @Field(() => [SavedAns], { nullable: true })
-  answer: [SavedAns];
+  result: [SavedAns];
 
   @Field(() => Date)
   createdAt: Date;

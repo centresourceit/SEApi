@@ -61,6 +61,20 @@ export interface LoginUserInput {
     password: string;
 }
 
+export interface SearchResultInput {
+    userId?: Nullable<number>;
+    projectId?: Nullable<number>;
+    licenseId?: Nullable<number>;
+    assesementId?: Nullable<number>;
+    totalScore?: Nullable<number>;
+    resultStatus?: Nullable<Result>;
+    certified?: Nullable<Status>;
+    certificatedId?: Nullable<string>;
+    certificatePrivacy?: Nullable<Status>;
+    status?: Nullable<Status>;
+    id?: Nullable<number>;
+}
+
 export interface SignUpUserInput {
     email: string;
     password: string;
@@ -413,6 +427,7 @@ export interface Results {
     user: User;
     license: License;
     project: Project;
+    assesement: Answer;
 }
 
 export interface SavedAns {
@@ -426,8 +441,7 @@ export interface SavedAns {
 
 export interface Answer {
     id: number;
-    assesmentId: number;
-    answer?: Nullable<SavedAns[]>;
+    result?: Nullable<SavedAns[]>;
     createdAt: DateTime;
     updatedAt: DateTime;
     deletedAt?: Nullable<DateTime>;
@@ -505,6 +519,7 @@ export interface IQuery {
     getAllLicenseById(id: number): License | Promise<License>;
     getAllAnswers(): Answer[] | Promise<Answer[]>;
     getAllResults(): Results[] | Promise<Results[]>;
+    searchResult(searchResultInput: SearchResultInput): Results[] | Promise<Results[]>;
     getAllCompliances(): Compliance[] | Promise<Compliance[]>;
     getAllCompliancesById(id: number): Compliance | Promise<Compliance>;
     getAllLicenseslave(): Licenseslave[] | Promise<Licenseslave[]>;

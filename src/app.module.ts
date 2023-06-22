@@ -24,8 +24,10 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', '../public'), // added ../ to get one folder back
-      serveRoot: '/public/', //last slash was important
+      // rootPath: join(process.cwd(), '../public'), // added ../ to get one folder back
+      // serveRoot: '/public/', //last slash was important
+      serveRoot: '/public',
+      rootPath: join(process.cwd(), 'public'),
     }),
     PrismaModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({

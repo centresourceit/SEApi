@@ -4,8 +4,8 @@ import { IsNotEmpty, IsOptional } from 'class-validator';
 import { Result, Status } from '@prisma/client';
 
 @InputType()
-export class UpdateResultInput extends PartialType(CreateResultInput) {
-  @IsNotEmpty()
+export class SearchResultInput extends PartialType(CreateResultInput) {
+  @IsOptional()
   @Field(() => Int, { nullable: true })
   id: number;
 
