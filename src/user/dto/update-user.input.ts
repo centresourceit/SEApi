@@ -18,8 +18,8 @@ export class UpdateUserInput extends PartialType(CreateUserInput) {
   email: string;
 
   @IsOptional()
-  @Field(() => Float, { nullable: true })
-  contact: number;
+  @Field(() => String, { nullable: true })
+  contact: string;
 
   @IsOptional()
   @Field(() => String, { nullable: true })

@@ -26,8 +26,8 @@ export class UpdateCompanyInput extends PartialType(CreateCompanyInput) {
   email: string;
 
   @IsOptional()
-  @Field(() => Float, { nullable: true })
-  ctoContact: number;
+  @Field(() => String, { nullable: true })
+  ctoContact: string;
 
   @IsOptional()
   @Field(() => String, { nullable: true })

@@ -138,7 +138,7 @@ export interface UpdateUserInput {
     id: number;
     name?: Nullable<string>;
     email?: Nullable<string>;
-    contact?: Nullable<number>;
+    contact?: Nullable<string>;
     address?: Nullable<string>;
     profession?: Nullable<string>;
     role?: Nullable<Role>;
@@ -151,7 +151,7 @@ export interface CreateCompanyInput {
     website?: Nullable<string>;
     logo?: Nullable<string>;
     email?: Nullable<string>;
-    ctoContact?: Nullable<number>;
+    ctoContact?: Nullable<string>;
     description?: Nullable<string>;
     address?: Nullable<string>;
     status?: Nullable<Status>;
@@ -162,7 +162,7 @@ export interface UpdateCompanyInput {
     website?: Nullable<string>;
     logo?: Nullable<string>;
     email?: Nullable<string>;
-    ctoContact?: Nullable<number>;
+    ctoContact?: Nullable<string>;
     description?: Nullable<string>;
     address?: Nullable<string>;
     status?: Nullable<Status>;
@@ -372,7 +372,7 @@ export interface User {
     id: number;
     name?: Nullable<string>;
     email?: Nullable<string>;
-    contact?: Nullable<number>;
+    contact?: Nullable<string>;
     address?: Nullable<string>;
     profession?: Nullable<string>;
     role: Role;
@@ -388,7 +388,7 @@ export interface Company {
     logo?: Nullable<string>;
     website?: Nullable<string>;
     email?: Nullable<string>;
-    ctoContact?: Nullable<number>;
+    ctoContact?: Nullable<string>;
     description?: Nullable<string>;
     address?: Nullable<string>;
     role: Role;

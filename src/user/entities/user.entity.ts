@@ -12,8 +12,8 @@ export class User {
   @Field(() => String, { nullable: true })
   email: string;
 
-  @Field(() => Float, { nullable: true })
-  contact: number;
+  @Field(() => String, { nullable: true })
+  contact: string;
 
   @Field(() => String, { nullable: true })
   address: string;

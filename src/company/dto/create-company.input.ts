@@ -24,8 +24,8 @@ export class CreateCompanyInput {
   email: string;
 
   @IsNotEmpty()
-  @Field(() => Float, { nullable: true })
-  ctoContact: number;
+  @Field(() => String, { nullable: true })
+  ctoContact: string;
 
   @IsNotEmpty()
   @Field(() => String, { nullable: true })

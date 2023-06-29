@@ -132,7 +132,7 @@ model user {
   name               String?
   email              String
   password           String
-  contact            BigInt?
+  contact            String?
   company            company?             @relation(fields: [companyId], references: [id])
   companyId          Int?
   address            String?
@@ -154,7 +154,7 @@ model company {
   logo        String
   website     String
   email       String
-  ctoContact  BigInt
+  ctoContact  String
   description String    @db.MediumText
   address     String
   status      Status    @default(ACTIVE)

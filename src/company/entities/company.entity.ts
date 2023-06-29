@@ -18,8 +18,8 @@ export class Company {
   @Field(() => String, { nullable: true })
   email: string;
 
-  @Field(() => Float, { nullable: true })
-  ctoContact: number;
+  @Field(() => String, { nullable: true })
+  ctoContact: string;
 
   @Field(() => String, { nullable: true })
   description: string;
