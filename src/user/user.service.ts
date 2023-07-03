@@ -60,6 +60,7 @@ export class UserService {
     const updateduser = this.prisma.user.update({
       where: { id: id },
       data: dataToUpdate,
+      include: { company: true },
     });
     if (!updateduser) throw new BadRequestException('Unable to update.');
     return updateduser;

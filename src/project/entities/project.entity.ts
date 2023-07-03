@@ -1,7 +1,6 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Status } from '@prisma/client';
 
-
 @ObjectType()
 export class Project {
   @Field(() => Int)
@@ -16,6 +15,9 @@ export class Project {
   @Field(() => Status)
   status: Status;
 
+  @Field(() => Int)
+  createdUserId: number;
+
   @Field(() => Date)
   createdAt: Date;
 
@@ -24,5 +26,4 @@ export class Project {
 
   @Field(() => Date, { nullable: true })
   deletedAt: Date;
-
 }

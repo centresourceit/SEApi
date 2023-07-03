@@ -61,6 +61,15 @@ export interface LoginUserInput {
     password: string;
 }
 
+export interface SearchProjectInput {
+    createdUserId?: Nullable<number>;
+    name?: Nullable<string>;
+    description?: Nullable<string>;
+    status?: Nullable<Status>;
+    id?: Nullable<number>;
+    deletedAt?: Nullable<DateTime>;
+}
+
 export interface SearchResultInput {
     userId?: Nullable<number>;
     projectId?: Nullable<number>;
@@ -73,6 +82,18 @@ export interface SearchResultInput {
     certificatePrivacy?: Nullable<Status>;
     status?: Nullable<Status>;
     id?: Nullable<number>;
+}
+
+export interface SearchLicenseslaveInput {
+    licenseTypeId?: Nullable<number>;
+    paymentStatus?: Nullable<Status>;
+    licenseValidity?: Nullable<DateTime>;
+    userId?: Nullable<number>;
+    paymentReference?: Nullable<string>;
+    paymentAmount?: Nullable<number>;
+    status?: Nullable<Status>;
+    id?: Nullable<number>;
+    deletedAt?: Nullable<DateTime>;
 }
 
 export interface SignUpUserInput {
@@ -139,6 +160,7 @@ export interface UpdateUserInput {
     name?: Nullable<string>;
     email?: Nullable<string>;
     contact?: Nullable<string>;
+    companyId?: Nullable<number>;
     address?: Nullable<string>;
     profession?: Nullable<string>;
     role?: Nullable<Role>;
@@ -269,16 +291,25 @@ export interface UpdateComplianceInput {
     deletedAt?: Nullable<DateTime>;
 }
 
+export interface CreateLicenseslaveInput {
+    licenseTypeId: number;
+    paymentStatus: Status;
+    licenseValidity: DateTime;
+    userId: number;
+    paymentReference: string;
+    paymentAmount: number;
+    status: Status;
+}
+
 export interface UpdateLicenseslaveInput {
-    exampleField?: Nullable<number>;
-    id: number;
     licenseTypeId?: Nullable<number>;
-    userId?: Nullable<number>;
     paymentStatus?: Nullable<Status>;
     licenseValidity?: Nullable<DateTime>;
+    userId?: Nullable<number>;
     paymentReference?: Nullable<string>;
     paymentAmount?: Nullable<number>;
     status?: Nullable<Status>;
+    id: number;
     deletedAt?: Nullable<DateTime>;
 }
 
@@ -368,20 +399,6 @@ export interface QuestionBank {
     questionPlan: License;
 }
 
-export interface User {
-    id: number;
-    name?: Nullable<string>;
-    email?: Nullable<string>;
-    contact?: Nullable<string>;
-    address?: Nullable<string>;
-    profession?: Nullable<string>;
-    role: Role;
-    status: Status;
-    createdAt: DateTime;
-    updatedAt: DateTime;
-    deletedAt?: Nullable<DateTime>;
-}
-
 export interface Company {
     id: number;
     name?: Nullable<string>;
@@ -398,11 +415,28 @@ export interface Company {
     deletedAt?: Nullable<DateTime>;
 }
 
+export interface User {
+    id: number;
+    name?: Nullable<string>;
+    email?: Nullable<string>;
+    contact?: Nullable<string>;
+    companyId?: Nullable<number>;
+    address?: Nullable<string>;
+    profession?: Nullable<string>;
+    role: Role;
+    status: Status;
+    createdAt: DateTime;
+    updatedAt: DateTime;
+    deletedAt?: Nullable<DateTime>;
+    company?: Nullable<Company>;
+}
+
 export interface Project {
     id: number;
     name: string;
     description: string;
     status: Status;
+    createdUserId: number;
     createdAt: DateTime;
     updatedAt: DateTime;
     deletedAt?: Nullable<DateTime>;
@@ -515,6 +549,7 @@ export interface IQuery {
     getCompanyById(id: number): Company | Promise<Company>;
     getAllProject(): Project[] | Promise<Project[]>;
     getAllProjectById(id: number): Project | Promise<Project>;
+    searchProject(searchProjectInput: SearchProjectInput): Project[] | Promise<Project[]>;
     getAllLicense(): License[] | Promise<License[]>;
     getAllLicenseById(id: number): License | Promise<License>;
     getAllAnswers(): Answer[] | Promise<Answer[]>;
@@ -524,6 +559,7 @@ export interface IQuery {
     getAllCompliancesById(id: number): Compliance | Promise<Compliance>;
     getAllLicenseslave(): Licenseslave[] | Promise<Licenseslave[]>;
     getAllLicenseslaveById(id: number): Licenseslave | Promise<Licenseslave>;
+    searchLicenseslave(searchLicenseslaveInput: SearchLicenseslaveInput): Licenseslave[] | Promise<Licenseslave[]>;
     getAllFeedback(): Feedback[] | Promise<Feedback[]>;
     getAllFeedbackById(id: number): Feedback | Promise<Feedback>;
 }
@@ -552,6 +588,7 @@ export interface IMutation {
     createCompliance(createComplianceInput: CreateComplianceInput): Compliance | Promise<Compliance>;
     updateComplianceById(updateComplianceInput: UpdateComplianceInput): Compliance | Promise<Compliance>;
     deleteComplianceById(updateComplianceInput: UpdateComplianceInput): Compliance | Promise<Compliance>;
+    createLicenseSlave(createLicenseslaveInput: CreateLicenseslaveInput): Licenseslave | Promise<Licenseslave>;
     updateLicenseslaveById(updateLicenseslaveInput: UpdateLicenseslaveInput): Licenseslave | Promise<Licenseslave>;
     deleteLicenseSlaveById(updateLicenseslaveInput: UpdateLicenseslaveInput): Licenseslave | Promise<Licenseslave>;
     createFeedback(createFeedbackInput: CreateFeedbackInput): Feedback | Promise<Feedback>;

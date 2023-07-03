@@ -1,5 +1,6 @@
 import { ObjectType, Field, Int, Float } from '@nestjs/graphql';
 import { Role, Status } from '@prisma/client';
+import { Company } from 'src/company/entities/company.entity';
 
 @ObjectType()
 export class User {
@@ -14,6 +15,9 @@ export class User {
 
   @Field(() => String, { nullable: true })
   contact: string;
+
+  @Field(() => Int, { nullable: true })
+  companyId: number;
 
   @Field(() => String, { nullable: true })
   address: string;
@@ -35,4 +39,7 @@ export class User {
 
   @Field(() => Date, { nullable: true })
   deletedAt: Date;
+
+  @Field(() => Company, { nullable: true })
+  company: Company;
 }

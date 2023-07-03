@@ -5,6 +5,9 @@ import {
 } from '@nestjs/common';
 import { UpdateLicenseslaveInput } from './dto/update-licenseslave.input';
 import { PrismaService } from 'prisma/prisma.service';
+import { CreateLicenseslaveInput } from './dto/create-licenseslave.input';
+import { create } from 'domain';
+import { SearchLicenseslaveInput } from './dto/search-licenseslave.input';
 
 @Injectable()
 export class LicenseslaveService {
@@ -28,6 +31,35 @@ export class LicenseslaveService {
     if (!license)
       throw new BadRequestException('No licenseslave exist with this id.');
     return license;
+  }
+
+  async searchLicenseslave(search: SearchLicenseslaveInput) {
+    const slave = await this.prisma.user_license_slave.findMany({
+      where: search,
+      include: { licenseType: true },
+    });
+
+    if (slave.length == 0)
+      throw new BadRequestException('There are no licanse slave.');
+    return slave;
+  }
+
+  async createLicenseSlave(license: CreateLicenseslaveInput) {
+    const dataToCreate: any = {};
+
+    for (const [key, value] of Object.entries(license)) {
+      if (value) {
+        dataToCreate[key] = value;
+      }
+    }
+
+    const License = await this.prisma.user_license_slave.create({
+      data: dataToCreate,
+    });
+
+    if (!License)
+      throw new BadRequestException('Unable to create license slave');
+    return License;
   }
 
   async updateLicenseslaveById(id: number, slave: UpdateLicenseslaveInput) {

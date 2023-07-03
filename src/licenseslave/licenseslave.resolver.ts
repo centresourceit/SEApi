@@ -5,6 +5,7 @@ import { CreateLicenseslaveInput } from './dto/create-licenseslave.input';
 import { UpdateLicenseslaveInput } from './dto/update-licenseslave.input';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { UseGuards } from '@nestjs/common';
+import { SearchLicenseslaveInput } from './dto/search-licenseslave.input';
 
 @UseGuards(AuthGuard)
 @Resolver(() => Licenseslave)
@@ -21,6 +22,22 @@ export class LicenseslaveResolver {
     return this.licenseslaveService.getAllLicenseslaveById(id);
   }
 
+  @Query(() => [Licenseslave])
+  searchLicenseslave(
+    @Args('searchLicenseslaveInput')
+    searchLicenseslaveInput: SearchLicenseslaveInput,
+  ) {
+    return this.licenseslaveService.searchLicenseslave(searchLicenseslaveInput);
+  }
+
+  @Mutation(() => Licenseslave)
+  createLicenseSlave(
+    @Args('createLicenseslaveInput')
+    createLicenseslaveInput: CreateLicenseslaveInput,
+  ) {
+    return this.licenseslaveService.createLicenseSlave(createLicenseslaveInput);
+  }
+
   @Mutation(() => Licenseslave)
   updateLicenseslaveById(
     @Args('updateLicenseslaveInput')
@@ -34,8 +51,11 @@ export class LicenseslaveResolver {
 
   @Mutation(() => Licenseslave)
   deleteLicenseSlaveById(
-    @Args('updateLicenseslaveInput') updateLicenseslaveInput: UpdateLicenseslaveInput,
+    @Args('updateLicenseslaveInput')
+    updateLicenseslaveInput: UpdateLicenseslaveInput,
   ) {
-    return this.licenseslaveService.deleteLicenseSlaveById(updateLicenseslaveInput);
+    return this.licenseslaveService.deleteLicenseSlaveById(
+      updateLicenseslaveInput,
+    );
   }
 }

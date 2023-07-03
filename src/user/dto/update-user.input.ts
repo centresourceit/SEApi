@@ -22,6 +22,10 @@ export class UpdateUserInput extends PartialType(CreateUserInput) {
   contact: string;
 
   @IsOptional()
+  @Field(() => Int, { nullable: true })
+  companyId: number;
+
+  @IsOptional()
   @Field(() => String, { nullable: true })
   address: string;
 

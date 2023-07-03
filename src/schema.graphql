@@ -98,20 +98,6 @@ enum QuestionType {
   PERCENTAGE
 }
 
-type User {
-  id: Int!
-  name: String
-  email: String
-  contact: String
-  address: String
-  profession: String
-  role: Role!
-  status: Status!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  deletedAt: DateTime
-}
-
 type Company {
   id: Int!
   name: String
@@ -128,11 +114,28 @@ type Company {
   deletedAt: DateTime
 }
 
+type User {
+  id: Int!
+  name: String
+  email: String
+  contact: String
+  companyId: Int
+  address: String
+  profession: String
+  role: Role!
+  status: Status!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  company: Company
+}
+
 type Project {
   id: Int!
   name: String!
   description: String!
   status: Status!
+  createdUserId: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
   deletedAt: DateTime
@@ -268,6 +271,7 @@ type Query {
   getCompanyById(id: Int!): Company!
   getAllProject: [Project!]!
   getAllProjectById(id: Int!): Project!
+  searchProject(searchProjectInput: SearchProjectInput!): [Project!]!
   getAllLicense: [License!]!
   getAllLicenseById(id: Int!): License!
   getAllAnswers: [Answer!]!
@@ -277,6 +281,7 @@ type Query {
   getAllCompliancesById(id: Int!): Compliance!
   getAllLicenseslave: [Licenseslave!]!
   getAllLicenseslaveById(id: Int!): Licenseslave!
+  searchLicenseslave(searchLicenseslaveInput: SearchLicenseslaveInput!): [Licenseslave!]!
   getAllFeedback: [Feedback!]!
   getAllFeedbackById(id: Int!): Feedback!
 }
@@ -284,6 +289,15 @@ type Query {
 input LoginUserInput {
   email: String!
   password: String!
+}
+
+input SearchProjectInput {
+  createdUserId: Int
+  name: String
+  description: String
+  status: Status
+  id: Int
+  deletedAt: DateTime
 }
 
 input SearchResultInput {
@@ -298,6 +312,18 @@ input SearchResultInput {
   certificatePrivacy: Status
   status: Status
   id: Int
+}
+
+input SearchLicenseslaveInput {
+  licenseTypeId: Int
+  paymentStatus: Status
+  licenseValidity: DateTime
+  userId: Int
+  paymentReference: String
+  paymentAmount: Int
+  status: Status
+  id: Int
+  deletedAt: DateTime
 }
 
 type Mutation {
@@ -324,6 +350,7 @@ type Mutation {
   createCompliance(createComplianceInput: CreateComplianceInput!): Compliance!
   updateComplianceById(updateComplianceInput: UpdateComplianceInput!): Compliance!
   deleteComplianceById(updateComplianceInput: UpdateComplianceInput!): Compliance!
+  createLicenseSlave(createLicenseslaveInput: CreateLicenseslaveInput!): Licenseslave!
   updateLicenseslaveById(updateLicenseslaveInput: UpdateLicenseslaveInput!): Licenseslave!
   deleteLicenseSlaveById(updateLicenseslaveInput: UpdateLicenseslaveInput!): Licenseslave!
   createFeedback(createFeedbackInput: CreateFeedbackInput!): Feedback!
@@ -394,6 +421,7 @@ input UpdateUserInput {
   name: String
   email: String
   contact: String
+  companyId: Int
   address: String
   profession: String
   role: Role
@@ -524,17 +552,25 @@ input UpdateComplianceInput {
   deletedAt: DateTime
 }
 
+input CreateLicenseslaveInput {
+  licenseTypeId: Int!
+  paymentStatus: Status!
+  licenseValidity: DateTime!
+  userId: Int!
+  paymentReference: String!
+  paymentAmount: Int!
+  status: Status!
+}
+
 input UpdateLicenseslaveInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
   licenseTypeId: Int
-  userId: Int
   paymentStatus: Status
   licenseValidity: DateTime
+  userId: Int
   paymentReference: String
   paymentAmount: Int
   status: Status
+  id: Int!
   deletedAt: DateTime
 }
 

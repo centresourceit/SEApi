@@ -6,6 +6,7 @@ import {
 import { CreateProjectInput } from './dto/create-project.input';
 import { UpdateProjectInput } from './dto/update-project.input';
 import { PrismaService } from 'prisma/prisma.service';
+import { SearchProjectInput } from './dto/search-project.input';
 
 @Injectable()
 export class ProjectService {
@@ -26,6 +27,16 @@ export class ProjectService {
     });
     if (!project)
       throw new BadRequestException('No project exist with this id.');
+    return project;
+  }
+
+  async searchProject(search: SearchProjectInput) {
+    const project = await this.prisma.project.findMany({
+      where: search,
+    });
+
+    if (project.length == 0)
+      throw new BadRequestException('There are no projects.');
     return project;
   }
 
