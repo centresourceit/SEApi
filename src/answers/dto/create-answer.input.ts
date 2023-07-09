@@ -5,7 +5,7 @@ import { IsNotEmpty, IsOptional } from 'class-validator';
 export class SavedAnswer {
   @IsOptional()
   @Field(() => Int, { nullable: true })
-  questionId: number;
+  id: number;
 
   @IsOptional()
   @Field(() => String, { nullable: true })
@@ -22,6 +22,10 @@ export class SavedAnswer {
   @IsOptional()
   @Field(() => String, { nullable: true })
   rec: string;
+
+  @IsOptional()
+  @Field(() => Int, { nullable: true })
+  version: number;
 
   @IsOptional()
   @Field(() => Boolean, { nullable: true })

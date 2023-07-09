@@ -9,6 +9,7 @@ import { UpdateResultInput } from './dto/update-result.input';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { UseGuards } from '@nestjs/common';
 import { SearchResultInput } from './dto/search-result.input';
+import { SearchTakeTestInput } from './dto/search-taketest.input';
 
 @UseGuards(AuthGuard)
 @Resolver(() => Answer)
@@ -30,6 +31,13 @@ export class AnswersResolver {
     @Args('searchResultInput') searchResultInput: SearchResultInput,
   ) {
     return this.answersService.searchResult(searchResultInput);
+  }
+
+  @Query(() => Results)
+  taketest(
+    @Args('searchTakeTestInput') searchTakeTestInput: SearchTakeTestInput,
+  ) {
+    return this.answersService.taketest(searchTakeTestInput);
   }
 
   @Mutation(() => Results)

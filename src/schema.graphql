@@ -171,10 +171,12 @@ enum Result {
 }
 
 type SavedAns {
+  id: Int!
   question: String!
   answer: String!
   mark: Int!
   rec: String!
+  version: Int!
   status: Boolean!
   updatedAt: DateTime!
 }
@@ -277,6 +279,7 @@ type Query {
   getAllAnswers: [Answer!]!
   getAllResults: [Results!]!
   searchResult(searchResultInput: SearchResultInput!): [Results!]!
+  taketest(searchTakeTestInput: SearchTakeTestInput!): Results!
   getAllCompliances: [Compliance!]!
   getAllCompliancesById(id: Int!): Compliance!
   getAllLicenseslave: [Licenseslave!]!
@@ -312,6 +315,12 @@ input SearchResultInput {
   certificatePrivacy: Status
   status: Status
   id: Int
+}
+
+input SearchTakeTestInput {
+  userId: Int
+  projectId: Int
+  status: Status
 }
 
 input SearchLicenseslaveInput {
@@ -496,11 +505,12 @@ input CreateAnswerInput {
 }
 
 input SavedAnswer {
-  questionId: Int
+  id: Int
   question: String
   answer: String
   mark: Int
   rec: String
+  version: Int
   status: Boolean
   updatedAt: DateTime
 }
@@ -533,7 +543,6 @@ input UpdateResultInput {
   certificatedId: String
   certificatePrivacy: Status
   status: Status
-  id: Int
 }
 
 input CreateComplianceInput {

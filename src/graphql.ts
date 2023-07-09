@@ -84,6 +84,12 @@ export interface SearchResultInput {
     id?: Nullable<number>;
 }
 
+export interface SearchTakeTestInput {
+    userId?: Nullable<number>;
+    projectId?: Nullable<number>;
+    status?: Nullable<Status>;
+}
+
 export interface SearchLicenseslaveInput {
     licenseTypeId?: Nullable<number>;
     paymentStatus?: Nullable<Status>;
@@ -235,11 +241,12 @@ export interface CreateAnswerInput {
 }
 
 export interface SavedAnswer {
-    questionId?: Nullable<number>;
+    id?: Nullable<number>;
     question?: Nullable<string>;
     answer?: Nullable<string>;
     mark?: Nullable<number>;
     rec?: Nullable<string>;
+    version?: Nullable<number>;
     status?: Nullable<boolean>;
     updatedAt?: Nullable<DateTime>;
 }
@@ -272,7 +279,6 @@ export interface UpdateResultInput {
     certificatedId?: Nullable<string>;
     certificatePrivacy?: Nullable<Status>;
     status?: Nullable<Status>;
-    id?: Nullable<number>;
 }
 
 export interface CreateComplianceInput {
@@ -465,10 +471,12 @@ export interface Results {
 }
 
 export interface SavedAns {
+    id: number;
     question: string;
     answer: string;
     mark: number;
     rec: string;
+    version: number;
     status: boolean;
     updatedAt: DateTime;
 }
@@ -555,6 +563,7 @@ export interface IQuery {
     getAllAnswers(): Answer[] | Promise<Answer[]>;
     getAllResults(): Results[] | Promise<Results[]>;
     searchResult(searchResultInput: SearchResultInput): Results[] | Promise<Results[]>;
+    taketest(searchTakeTestInput: SearchTakeTestInput): Results | Promise<Results>;
     getAllCompliances(): Compliance[] | Promise<Compliance[]>;
     getAllCompliancesById(id: number): Compliance | Promise<Compliance>;
     getAllLicenseslave(): Licenseslave[] | Promise<Licenseslave[]>;

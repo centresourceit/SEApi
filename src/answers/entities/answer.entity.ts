@@ -7,6 +7,9 @@ import { Results } from './result.entity';
 
 @ObjectType()
 export class SavedAns {
+  @Field(() => Int)
+  id: number;
+
   @Field(() => String)
   question: string;
 
@@ -18,6 +21,9 @@ export class SavedAns {
 
   @Field(() => String)
   rec: string;
+
+  @Field(() => Int)
+  version: number;
 
   @Field(() => Boolean)
   status: boolean;

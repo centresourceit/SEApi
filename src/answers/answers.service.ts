@@ -1,10 +1,17 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateAnswerInput } from './dto/create-answer.input';
 import { UpdateAnswerInput } from './dto/update-answer.input';
 import { PrismaService } from 'prisma/prisma.service';
 import { CreateResultInput } from './dto/create-result.input';
 import { UpdateResultInput } from './dto/update-result.input';
 import { SearchResultInput } from './dto/search-result.input';
+import { SearchTakeTestInput } from './dto/search-taketest.input';
+import { resourceUsage } from 'process';
+import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class AnswersService {
@@ -50,6 +57,24 @@ export class AnswersService {
     return results;
   }
 
+  async taketest(search: SearchTakeTestInput) {
+    const result = await this.prisma.assesement_result.findFirst({
+      where: {
+        userId: search.userId,
+        projectId: search.projectId,
+      },
+      include: {
+        user: true,
+        assesement: true,
+        license: true,
+        project: true,
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+    if (!result) throw new NotFoundException('No result found');
+    return result;
+  }
+
   async createResults(
     createAnswerInput: CreateAnswerInput,
     createResultInput: CreateResultInput,
@@ -57,10 +82,12 @@ export class AnswersService {
     const answer = await this.prisma.assesement_result_revised.create({
       data: {
         result: createAnswerInput.answers.map((answer) => ({
+          id: answer.id,
           question: answer.question,
           answer: answer.answer,
           mark: answer.mark,
           rec: answer.rec,
+          version: answer.version,
           status: answer.status,
           updatedAt: answer.updatedAt.toJSON(),
         })),
@@ -93,12 +120,11 @@ export class AnswersService {
         userId: updateResultInput.userId,
         projectId: updateResultInput.projectId,
       },
+      orderBy: { createdAt: 'desc' },
     });
 
     if (!resultsearch)
-      throw new BadRequestException(
-        `Result with id ${updateResultInput.id} not found`,
-      );
+      throw new BadRequestException(`Result with this data not found`);
 
     const dataToUpdate: {
       [key: string]: any;
@@ -121,10 +147,12 @@ export class AnswersService {
       where: { id: result.id },
       data: {
         result: updateAnswerInput.answers.map((answer) => ({
+          id: answer.id,
           question: answer.question,
           answer: answer.answer,
           mark: answer.mark,
           rec: answer.rec,
+          version: answer.version,
           status: answer.status,
           updatedAt: answer.updatedAt.toJSON(),
         })),
