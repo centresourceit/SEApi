@@ -31,9 +31,7 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
-  deleteUserById(
-    @Args('updateUserInput') updateUserInput: UpdateUserInput,
-  ) {
+  deleteUserById(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     return this.userService.deleteUserById(updateUserInput);
   }
 }

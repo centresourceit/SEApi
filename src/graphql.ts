@@ -242,11 +242,16 @@ export interface CreateAnswerInput {
 
 export interface SavedAnswer {
     id?: Nullable<number>;
+    principleid?: Nullable<number>;
+    principlename?: Nullable<string>;
     question?: Nullable<string>;
     answer?: Nullable<string>;
     mark?: Nullable<number>;
     rec?: Nullable<string>;
     version?: Nullable<number>;
+    license?: Nullable<number>;
+    questiontype?: Nullable<QuestionType>;
+    questioncode?: Nullable<string>;
     status?: Nullable<boolean>;
     updatedAt?: Nullable<DateTime>;
 }
@@ -414,7 +419,6 @@ export interface Company {
     ctoContact?: Nullable<string>;
     description?: Nullable<string>;
     address?: Nullable<string>;
-    role: Role;
     status: Status;
     createdAt: DateTime;
     updatedAt: DateTime;
@@ -472,11 +476,16 @@ export interface Results {
 
 export interface SavedAns {
     id: number;
+    principleid: number;
+    principlename: string;
     question: string;
     answer: string;
     mark: number;
     rec: string;
     version: number;
+    license: number;
+    questiontype: QuestionType;
+    questioncode: string;
     status: boolean;
     updatedAt: DateTime;
 }
@@ -563,6 +572,7 @@ export interface IQuery {
     getAllAnswers(): Answer[] | Promise<Answer[]>;
     getAllResults(): Results[] | Promise<Results[]>;
     searchResult(searchResultInput: SearchResultInput): Results[] | Promise<Results[]>;
+    getUserResult(searchResultInput: SearchResultInput): Results[] | Promise<Results[]>;
     taketest(searchTakeTestInput: SearchTakeTestInput): Results | Promise<Results>;
     getAllCompliances(): Compliance[] | Promise<Compliance[]>;
     getAllCompliancesById(id: number): Compliance | Promise<Compliance>;

@@ -10,8 +10,6 @@ import { CreateResultInput } from './dto/create-result.input';
 import { UpdateResultInput } from './dto/update-result.input';
 import { SearchResultInput } from './dto/search-result.input';
 import { SearchTakeTestInput } from './dto/search-taketest.input';
-import { resourceUsage } from 'process';
-import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class AnswersService {
@@ -57,6 +55,23 @@ export class AnswersService {
     return results;
   }
 
+  async getUserResult(search: SearchResultInput) {
+    const results = await this.prisma.assesement_result.findMany({
+      where: { projectId: search.projectId, userId: search.userId },
+      include: {
+        user: true,
+        license: true,
+        project: true,
+        assesement: true,
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 3,
+    });
+    if (results.length == 0)
+      throw new BadRequestException('There is no results');
+    return results;
+  }
+
   async taketest(search: SearchTakeTestInput) {
     const result = await this.prisma.assesement_result.findFirst({
       where: {
@@ -83,16 +98,22 @@ export class AnswersService {
       data: {
         result: createAnswerInput.answers.map((answer) => ({
           id: answer.id,
+          principleid: answer.principleid,
+          principlename: answer.principlename,
           question: answer.question,
           answer: answer.answer,
           mark: answer.mark,
           rec: answer.rec,
           version: answer.version,
           status: answer.status,
+          license: answer.license,
+          questioncode: answer.questioncode,
+          questiontype: answer.questiontype,
           updatedAt: answer.updatedAt.toJSON(),
         })),
       },
     });
+
 
     if (!answer) throw new BadRequestException('Unable to create answers');
     createResultInput.assesementId = answer.id;
@@ -136,6 +157,7 @@ export class AnswersService {
       }
     }
 
+
     const result = await this.prisma.assesement_result.update({
       where: {
         id: resultsearch.id,
@@ -148,12 +170,17 @@ export class AnswersService {
       data: {
         result: updateAnswerInput.answers.map((answer) => ({
           id: answer.id,
+          principleid: answer.principleid,
+          principlename: answer.principlename,
           question: answer.question,
           answer: answer.answer,
           mark: answer.mark,
           rec: answer.rec,
           version: answer.version,
           status: answer.status,
+          license: answer.license,
+          questioncode: answer.questioncode,
+          questiontype: answer.questiontype,
           updatedAt: answer.updatedAt.toJSON(),
         })),
       },

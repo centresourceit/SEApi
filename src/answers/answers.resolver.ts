@@ -26,11 +26,20 @@ export class AnswersResolver {
     return this.answersService.getAllResults();
   }
 
+
+
   @Query(() => [Results])
   searchResult(
     @Args('searchResultInput') searchResultInput: SearchResultInput,
   ) {
     return this.answersService.searchResult(searchResultInput);
+  }
+
+  @Query(() => [Results])
+  getUserResult(
+    @Args('searchResultInput') searchResultInput: SearchResultInput,
+  ) {
+    return this.answersService.getUserResult(searchResultInput);
   }
 
   @Query(() => Results)

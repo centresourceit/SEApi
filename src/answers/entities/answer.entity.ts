@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { user } from '@prisma/client';
+import { QuestionType, user } from '@prisma/client';
 import { License } from 'src/license/entities/license.entity';
 import { Project } from 'src/project/entities/project.entity';
 import { User } from 'src/user/entities/user.entity';
@@ -9,6 +9,12 @@ import { Results } from './result.entity';
 export class SavedAns {
   @Field(() => Int)
   id: number;
+
+  @Field(() => Int)
+  principleid: number;
+
+  @Field(() => String)
+  principlename: string;
 
   @Field(() => String)
   question: string;
@@ -24,6 +30,15 @@ export class SavedAns {
 
   @Field(() => Int)
   version: number;
+
+  @Field(() => Int)
+  license: number;
+
+  @Field(() => QuestionType)
+  questiontype: QuestionType;
+
+  @Field(() => String)
+  questioncode: string;
 
   @Field(() => Boolean)
   status: boolean;

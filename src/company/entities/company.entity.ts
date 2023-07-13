@@ -27,9 +27,6 @@ export class Company {
   @Field(() => String, { nullable: true })
   address: string;
 
-  @Field(() => Role)
-  role: Role;
-
   @Field(() => Status)
   status: Status;
 

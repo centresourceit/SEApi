@@ -107,7 +107,6 @@ type Company {
   ctoContact: String
   description: String
   address: String
-  role: Role!
   status: Status!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -172,11 +171,16 @@ enum Result {
 
 type SavedAns {
   id: Int!
+  principleid: Int!
+  principlename: String!
   question: String!
   answer: String!
   mark: Int!
   rec: String!
   version: Int!
+  license: Int!
+  questiontype: QuestionType!
+  questioncode: String!
   status: Boolean!
   updatedAt: DateTime!
 }
@@ -279,6 +283,7 @@ type Query {
   getAllAnswers: [Answer!]!
   getAllResults: [Results!]!
   searchResult(searchResultInput: SearchResultInput!): [Results!]!
+  getUserResult(searchResultInput: SearchResultInput!): [Results!]!
   taketest(searchTakeTestInput: SearchTakeTestInput!): Results!
   getAllCompliances: [Compliance!]!
   getAllCompliancesById(id: Int!): Compliance!
@@ -506,11 +511,16 @@ input CreateAnswerInput {
 
 input SavedAnswer {
   id: Int
+  principleid: Int
+  principlename: String
   question: String
   answer: String
   mark: Int
   rec: String
   version: Int
+  license: Int
+  questiontype: QuestionType
+  questioncode: String
   status: Boolean
   updatedAt: DateTime
 }
