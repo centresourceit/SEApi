@@ -49,6 +49,10 @@ export class UpdateQuestionbankInput extends PartialType(
 
   @IsOptional()
   @Field(() => Int, { nullable: true })
+  complianceId: number;
+
+  @IsOptional()
+  @Field(() => Int, { nullable: true })
   version: number;
 
   @IsOptional()

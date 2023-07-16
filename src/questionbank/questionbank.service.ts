@@ -14,7 +14,7 @@ export class QuestionbankService {
 
   async getAllQuestion() {
     const questions = await this.prisma.question_bank.findMany({
-      include: { principle: true, questionPlan: true },
+      include: { principle: true, questionPlan: true, complince: true },
       where: { deletedAt: null },
       orderBy: [{ questionRefId: 'asc' }, { version: 'desc' }],
       distinct: ['questionRefId'],
@@ -30,6 +30,7 @@ export class QuestionbankService {
       include: {
         principle: true,
         questionPlan: true,
+        complince: true,
       },
     });
     if (!question)

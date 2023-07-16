@@ -10,6 +10,10 @@ export class UpdateLicenseInput extends PartialType(CreateLicenseInput) {
   id: number;
 
   @IsOptional()
+  @Field(() => String, { nullable: true })
+  name: string;
+
+  @IsOptional()
   @Field(() => LicenseType, { nullable: true })
   licenseType: LicenseType;
 

@@ -10,6 +10,9 @@ export class Compliance {
   name: string;
 
   @Field(() => String)
+  logo: string;
+
+  @Field(() => String)
   description: string;
 
   @Field(() => String)

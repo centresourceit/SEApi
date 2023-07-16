@@ -21,6 +21,10 @@ export class CreateQuestionbankInput {
   principleId: number;
 
   @IsNotEmpty()
+  @Field(() => Int)
+  complianceId: number;
+
+  @IsNotEmpty()
   @Field(() => QuestionType)
   questionType: QuestionType;
 

@@ -5,15 +5,19 @@ import { IsNotEmpty, IsOptional } from 'class-validator';
 @InputType()
 export class CreateComplianceInput {
   @IsNotEmpty()
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   name: string;
 
   @IsNotEmpty()
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
+  logo: string;
+
+  @IsNotEmpty()
+  @Field(() => String)
   description: string;
 
   @IsNotEmpty()
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   LearnMoreLink: string;
 
   @IsOptional()

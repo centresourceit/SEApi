@@ -5,26 +5,30 @@ import { IsNotEmpty } from 'class-validator';
 @InputType()
 export class CreateLicenseInput {
   @IsNotEmpty()
-  @Field(() => LicenseType, { nullable: true })
+  @Field(() => LicenseType)
   licenseType: LicenseType;
 
   @IsNotEmpty()
-  @Field(() => Int, { nullable: true })
+  @Field(() => Int)
   paymentAmount: number;
 
   @IsNotEmpty()
-  @Field(() => Int, { nullable: true })
+  @Field(() => String)
+  name: string;
+
+  @IsNotEmpty()
+  @Field(() => Int)
   discountAmount: number;
 
   @IsNotEmpty()
-  @Field(() => Int, { nullable: true })
+  @Field(() => Int)
   questionAllowed: number;
 
   @IsNotEmpty()
-  @Field(() => Int, { nullable: true })
+  @Field(() => Int)
   projectPerLicense: number;
 
   @IsNotEmpty()
-  @Field(() => Date, { nullable: true })
+  @Field(() => Date)
   discountValidTill: Date;
 }

@@ -15,6 +15,10 @@ export class UpdateComplianceInput extends PartialType(CreateComplianceInput) {
 
   @IsOptional()
   @Field(() => String, { nullable: true })
+  logo: string;
+
+  @IsOptional()
+  @Field(() => String, { nullable: true })
   description: string;
 
   @IsOptional()

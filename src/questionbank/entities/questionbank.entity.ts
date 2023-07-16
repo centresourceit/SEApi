@@ -1,6 +1,7 @@
 import { ObjectType, Field, Int, registerEnumType } from '@nestjs/graphql';
 import { LicenseType, QuestionType, Status } from '@prisma/client';
 import { GraphQLScalarType } from 'graphql';
+import { Compliance } from 'src/compliance/entities/compliance.entity';
 import { License } from 'src/license/entities/license.entity';
 import { Principle } from 'src/principle/entities/principle.entity';
 
@@ -34,6 +35,9 @@ export class QuestionBank {
 
   @Field(() => Int)
   licensesId: number;
+
+  @Field(() => Int)
+  complianceId: number;
 
   @Field(() => Status)
   status: Status;
@@ -70,4 +74,7 @@ export class QuestionBank {
 
   @Field(() => License)
   questionPlan: License;
+
+  @Field(() => Compliance)
+  complince: Compliance;
 }

@@ -109,6 +109,7 @@ export interface SignUpUserInput {
 
 export interface CreateQuestionbankInput {
     principleId: number;
+    complianceId: number;
     questionType: QuestionType;
     question: string;
     description: string;
@@ -127,6 +128,7 @@ export interface QuestionAnswerInput {
 
 export interface UpdateQuestionbankInput {
     principleId?: Nullable<number>;
+    complianceId?: Nullable<number>;
     questionType?: Nullable<QuestionType>;
     question?: Nullable<string>;
     description?: Nullable<string>;
@@ -216,17 +218,19 @@ export interface UpdateProjectInput {
 }
 
 export interface CreateLicenseInput {
-    licenseType?: Nullable<LicenseType>;
-    paymentAmount?: Nullable<number>;
-    discountAmount?: Nullable<number>;
-    questionAllowed?: Nullable<number>;
-    projectPerLicense?: Nullable<number>;
-    discountValidTill?: Nullable<DateTime>;
+    licenseType: LicenseType;
+    paymentAmount: number;
+    name: string;
+    discountAmount: number;
+    questionAllowed: number;
+    projectPerLicense: number;
+    discountValidTill: DateTime;
 }
 
 export interface UpdateLicenseInput {
     licenseType?: Nullable<LicenseType>;
     paymentAmount?: Nullable<number>;
+    name?: Nullable<string>;
     discountAmount?: Nullable<number>;
     questionAllowed?: Nullable<number>;
     projectPerLicense?: Nullable<number>;
@@ -287,14 +291,16 @@ export interface UpdateResultInput {
 }
 
 export interface CreateComplianceInput {
-    name?: Nullable<string>;
-    description?: Nullable<string>;
-    LearnMoreLink?: Nullable<string>;
+    name: string;
+    logo: string;
+    description: string;
+    LearnMoreLink: string;
     status?: Nullable<Status>;
 }
 
 export interface UpdateComplianceInput {
     name?: Nullable<string>;
+    logo?: Nullable<string>;
     description?: Nullable<string>;
     LearnMoreLink?: Nullable<string>;
     status?: Nullable<Status>;
@@ -361,10 +367,23 @@ export interface Auth {
     deletedAt?: Nullable<DateTime>;
 }
 
+export interface Compliance {
+    id: number;
+    name: string;
+    logo: string;
+    description: string;
+    LearnMoreLink: string;
+    status: Status;
+    createdAt: DateTime;
+    updatedAt: DateTime;
+    deletedAt?: Nullable<DateTime>;
+}
+
 export interface License {
     id: number;
     licenseType: LicenseType;
     paymentAmount: number;
+    name: string;
     discountAmount: string;
     questionAllowed: number;
     projectPerLicense?: Nullable<number>;
@@ -396,6 +415,7 @@ export interface QuestionBank {
     id: number;
     questionType: QuestionType;
     licensesId: number;
+    complianceId: number;
     status: Status;
     question: string;
     description?: Nullable<string>;
@@ -408,6 +428,7 @@ export interface QuestionBank {
     deletedAt?: Nullable<DateTime>;
     principle: Principle;
     questionPlan: License;
+    complince: Compliance;
 }
 
 export interface Company {
@@ -497,17 +518,6 @@ export interface Answer {
     updatedAt: DateTime;
     deletedAt?: Nullable<DateTime>;
     assesment: Results;
-}
-
-export interface Compliance {
-    id: number;
-    name: string;
-    description: string;
-    LearnMoreLink: string;
-    status: Status;
-    createdAt: DateTime;
-    updatedAt: DateTime;
-    deletedAt?: Nullable<DateTime>;
 }
 
 export interface Licenseslave {

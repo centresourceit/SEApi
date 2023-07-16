@@ -79,6 +79,8 @@ model question_bank {
   id            Int                  @id @default(autoincrement())
   principle     principle            @relation(fields: [principleId], references: [id])
   principleId   Int
+  complince     compliance           @relation(fields: [complianceId], references: [id])
+  complianceId  Int
   questionRefId Int?
   questioncode  String
   version       Int
@@ -97,6 +99,7 @@ model question_bank {
 model user_licenses_master {
   id                 Int                  @id @default(autoincrement())
   licenseType        LicenseType          @default(FREE)
+  name               String
   paymentAmount      Int                  @default(0)
   discountAmount     Int                  @default(0)
   discountValidTill  DateTime?
@@ -210,14 +213,16 @@ model assesement_result_revised {
 }
 
 model compliance {
-  id            Int       @id @default(autoincrement())
+  id            Int             @id @default(autoincrement())
+  logo          String
   name          String
-  description   String    @db.MediumText
+  description   String          @db.MediumText
   LearnMoreLink String
-  status        Status    @default(ACTIVE)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  status        Status          @default(ACTIVE)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
   deletedAt     DateTime?
+  question_bank question_bank[]
 }
 
 model feedback {

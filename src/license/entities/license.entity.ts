@@ -17,6 +17,9 @@ export class License {
   paymentAmount: number;
 
   @Field(() => String)
+  name: string;
+
+  @Field(() => String)
   discountAmount: string;
 
   @Field(() => Int)
