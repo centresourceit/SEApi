@@ -568,6 +568,7 @@ export interface IQuery {
     getdata(): string | Promise<string>;
     getAllQuestion(): QuestionBank[] | Promise<QuestionBank[]>;
     getQuestionById(id: number): QuestionBank | Promise<QuestionBank>;
+    getQuestionHistory(id: number): QuestionBank[] | Promise<QuestionBank[]>;
     getPrinciple(): Principle[] | Promise<Principle[]>;
     getPrincipleById(id: number): Principle | Promise<Principle>;
     getAllUser(): User[] | Promise<User[]>;

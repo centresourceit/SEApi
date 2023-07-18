@@ -42,8 +42,14 @@ export class QuestionbankResolver {
 
   @Mutation(() => QuestionBank)
   deleteQuestionById(
-    @Args('updateQuestionbankInput') updateQuestionbankInput: UpdateQuestionbankInput,
+    @Args('updateQuestionbankInput')
+    updateQuestionbankInput: UpdateQuestionbankInput,
   ) {
     return this.questionbankService.deleteQuestionById(updateQuestionbankInput);
+  }
+
+  @Query(() => [QuestionBank])
+  getQuestionHistory(@Args('id', { type: () => Int }) id: number) {
+    return this.questionbankService.getQuestionHistory(id);
   }
 }

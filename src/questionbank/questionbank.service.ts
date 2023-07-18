@@ -114,4 +114,18 @@ export class QuestionbankService {
       throw new BadRequestException('Unable to update question.');
     return deleteQuesion;
   }
+
+  async getQuestionHistory(id: number) {
+    const question = await this.prisma.question_bank.findMany({
+      where: { questionRefId: id, deletedAt: null },
+      include: {
+        principle: true,
+        questionPlan: true,
+        complince: true,
+      },
+    });
+    if (!question)
+      throw new BadRequestException('No question History exist with this id.');
+    return question;
+  }
 }

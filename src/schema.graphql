@@ -273,6 +273,7 @@ type Query {
   getdata: String!
   getAllQuestion: [QuestionBank!]!
   getQuestionById(id: Int!): QuestionBank!
+  getQuestionHistory(id: Int!): [QuestionBank!]!
   getPrinciple: [Principle!]!
   getPrincipleById(id: Int!): Principle!
   getAllUser: [User!]!
