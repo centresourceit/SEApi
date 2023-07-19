@@ -288,6 +288,7 @@ export interface UpdateResultInput {
     certificatedId?: Nullable<string>;
     certificatePrivacy?: Nullable<Status>;
     status?: Nullable<Status>;
+    id?: Nullable<number>;
 }
 
 export interface CreateComplianceInput {
@@ -615,6 +616,7 @@ export interface IMutation {
     deleteLicenseById(updateLicenseInput: UpdateLicenseInput): License | Promise<License>;
     createResults(createAnswerInput: CreateAnswerInput, createResultInput: CreateResultInput): Results | Promise<Results>;
     updateResults(updateAnswerInput: UpdateAnswerInput, updateResultInput: UpdateResultInput): Results | Promise<Results>;
+    publicCertificate(updateResultInput: UpdateResultInput): Results | Promise<Results>;
     createCompliance(createComplianceInput: CreateComplianceInput): Compliance | Promise<Compliance>;
     updateComplianceById(updateComplianceInput: UpdateComplianceInput): Compliance | Promise<Compliance>;
     deleteComplianceById(updateComplianceInput: UpdateComplianceInput): Compliance | Promise<Compliance>;

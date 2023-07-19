@@ -114,7 +114,6 @@ export class AnswersService {
       },
     });
 
-
     if (!answer) throw new BadRequestException('Unable to create answers');
     createResultInput.assesementId = answer.id;
 
@@ -157,7 +156,6 @@ export class AnswersService {
       }
     }
 
-
     const result = await this.prisma.assesement_result.update({
       where: {
         id: resultsearch.id,
@@ -186,5 +184,23 @@ export class AnswersService {
       },
     });
     return { ...result, answer };
+  }
+
+  async publicCertificate(updateResultInput: UpdateResultInput) {
+    const resultsearch = await this.prisma.assesement_result.findFirst({
+      where: {
+        id: updateResultInput.id,
+      },
+    });
+
+    if (!resultsearch)
+      throw new BadRequestException(`Result with this id not found`);
+    const result = await this.prisma.assesement_result.update({
+      where: {
+        id: resultsearch.id,
+      },
+      data: { certificatePrivacy: 'ACTIVE' },
+    });
+    return result;
   }
 }

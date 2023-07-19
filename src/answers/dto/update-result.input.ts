@@ -7,6 +7,10 @@ import { Result, Status } from '@prisma/client';
 export class UpdateResultInput extends PartialType(CreateResultInput) {
   @IsOptional()
   @Field(() => Int, { nullable: true })
+  id: number;
+
+  @IsOptional()
+  @Field(() => Int, { nullable: true })
   userId: number;
 
   @IsOptional()

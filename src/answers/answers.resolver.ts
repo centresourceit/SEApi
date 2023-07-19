@@ -26,8 +26,6 @@ export class AnswersResolver {
     return this.answersService.getAllResults();
   }
 
-
-
   @Query(() => [Results])
   searchResult(
     @Args('searchResultInput') searchResultInput: SearchResultInput,
@@ -69,5 +67,12 @@ export class AnswersResolver {
       updateAnswerInput,
       updateResultInput,
     );
+  }
+
+  @Mutation(() => Results)
+  publicCertificate(
+    @Args('updateResultInput') updateResultInput: UpdateResultInput,
+  ) {
+    return this.answersService.publicCertificate(updateResultInput);
   }
 }

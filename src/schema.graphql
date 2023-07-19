@@ -366,6 +366,7 @@ type Mutation {
   deleteLicenseById(updateLicenseInput: UpdateLicenseInput!): License!
   createResults(createAnswerInput: CreateAnswerInput!, createResultInput: CreateResultInput!): Results!
   updateResults(updateAnswerInput: UpdateAnswerInput!, updateResultInput: UpdateResultInput!): Results!
+  publicCertificate(updateResultInput: UpdateResultInput!): Results!
   createCompliance(createComplianceInput: CreateComplianceInput!): Compliance!
   updateComplianceById(updateComplianceInput: UpdateComplianceInput!): Compliance!
   deleteComplianceById(updateComplianceInput: UpdateComplianceInput!): Compliance!
@@ -562,6 +563,7 @@ input UpdateResultInput {
   certificatedId: String
   certificatePrivacy: Status
   status: Status
+  id: Int
 }
 
 input CreateComplianceInput {
