@@ -44,7 +44,7 @@ export class AnswersService {
       where: searchResultInput,
       include: {
         user: true,
-        license: true,
+        license: { include: { licenseType: true } },
         project: true,
         assesement: true,
       },
@@ -203,4 +203,31 @@ export class AnswersService {
     });
     return result;
   }
+
+  async updateResultStatus(updateResultInput: UpdateResultInput) {
+    const resultsearch = await this.prisma.assesement_result.findFirst({
+      where: {
+        id: updateResultInput.id,
+      },
+    });
+
+    const dataToUpdate: {
+      [key: string]: any;
+    } = {};
+
+    for (const [key, value] of Object.entries(updateResultInput)) {
+      if (value) {
+        dataToUpdate[key] = value;
+      }
+    }
+    if (!resultsearch)
+      throw new BadRequestException(`Result with this id not found`);
+    const result = await this.prisma.assesement_result.update({
+      where: {
+        id: resultsearch.id,
+      },
+      data: dataToUpdate,
+    });
+    return result;
+  } 
 }

@@ -289,6 +289,7 @@ export interface UpdateResultInput {
     certificatePrivacy?: Nullable<Status>;
     status?: Nullable<Status>;
     id?: Nullable<number>;
+    adminComments?: Nullable<string>;
 }
 
 export interface CreateComplianceInput {
@@ -474,6 +475,22 @@ export interface Project {
     deletedAt?: Nullable<DateTime>;
 }
 
+export interface Licenseslave {
+    id: number;
+    licenseTypeId: number;
+    userId: number;
+    paymentStatus: Status;
+    licenseValidity: DateTime;
+    paymentReference: string;
+    paymentAmount: number;
+    status: Status;
+    createdAt: DateTime;
+    updatedAt: DateTime;
+    deletedAt?: Nullable<DateTime>;
+    user: User;
+    licenseType: License;
+}
+
 export interface Results {
     id: number;
     userId: number;
@@ -491,7 +508,7 @@ export interface Results {
     updatedAt: DateTime;
     deletedAt?: Nullable<DateTime>;
     user: User;
-    license: License;
+    license: Licenseslave;
     project: Project;
     assesement: Answer;
 }
@@ -519,22 +536,6 @@ export interface Answer {
     updatedAt: DateTime;
     deletedAt?: Nullable<DateTime>;
     assesment: Results;
-}
-
-export interface Licenseslave {
-    id: number;
-    licenseTypeId: number;
-    userId: number;
-    paymentStatus: Status;
-    licenseValidity: DateTime;
-    paymentReference: string;
-    paymentAmount: number;
-    status: Status;
-    createdAt: DateTime;
-    updatedAt: DateTime;
-    deletedAt?: Nullable<DateTime>;
-    user: User;
-    licenseType: License;
 }
 
 export interface FeedbackComment {
@@ -591,6 +592,7 @@ export interface IQuery {
     getAllLicenseslave(): Licenseslave[] | Promise<Licenseslave[]>;
     getAllLicenseslaveById(id: number): Licenseslave | Promise<Licenseslave>;
     searchLicenseslave(searchLicenseslaveInput: SearchLicenseslaveInput): Licenseslave[] | Promise<Licenseslave[]>;
+    getUserLicenseSlave(id: number): Licenseslave | Promise<Licenseslave>;
     getAllFeedback(): Feedback[] | Promise<Feedback[]>;
     getAllFeedbackById(id: number): Feedback | Promise<Feedback>;
 }
@@ -605,6 +607,7 @@ export interface IMutation {
     deletePrincipleById(updatePrincipleInput: UpdatePrincipleInput): Principle | Promise<Principle>;
     updateUserById(updateUserInput: UpdateUserInput): User | Promise<User>;
     deleteUserById(updateUserInput: UpdateUserInput): User | Promise<User>;
+    verifyUser(mail: string): User | Promise<User>;
     createCompany(createCompanyInput: CreateCompanyInput): Company | Promise<Company>;
     updateCompanyById(updateCompanyInput: UpdateCompanyInput): Company | Promise<Company>;
     deleteCompanyById(updateCompanyInput: UpdateCompanyInput): Company | Promise<Company>;
@@ -617,6 +620,7 @@ export interface IMutation {
     createResults(createAnswerInput: CreateAnswerInput, createResultInput: CreateResultInput): Results | Promise<Results>;
     updateResults(updateAnswerInput: UpdateAnswerInput, updateResultInput: UpdateResultInput): Results | Promise<Results>;
     publicCertificate(updateResultInput: UpdateResultInput): Results | Promise<Results>;
+    updateResultStatus(updateResultInput: UpdateResultInput): Results | Promise<Results>;
     createCompliance(createComplianceInput: CreateComplianceInput): Compliance | Promise<Compliance>;
     updateComplianceById(updateComplianceInput: UpdateComplianceInput): Compliance | Promise<Compliance>;
     deleteComplianceById(updateComplianceInput: UpdateComplianceInput): Compliance | Promise<Compliance>;

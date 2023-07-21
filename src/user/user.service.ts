@@ -81,4 +81,19 @@ export class UserService {
     if (!deleteUser) throw new BadRequestException('Unable to update user.');
     return deleteUser;
   }
+  async verifyUser(mail: string) {
+    const existing = await this.prisma.user.findFirst({
+      where: { email: mail },
+    });
+
+    if (!existing) {
+      throw new NotFoundException(`User with E-Mail ${mail} not found`);
+    }
+    const verifyUser = this.prisma.user.update({
+      where: { id: existing.id },
+      data: { status: 'ACTIVE' },
+    });
+    if (!verifyUser) throw new BadRequestException('Unable to verify user.');
+    return verifyUser;
+  }
 }

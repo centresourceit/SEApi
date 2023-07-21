@@ -4,6 +4,7 @@ import { User } from 'src/user/entities/user.entity';
 import { License } from 'src/license/entities/license.entity';
 import { Project } from 'src/project/entities/project.entity';
 import { Answer } from './answer.entity';
+import { Licenseslave } from 'src/licenseslave/entities/licenseslave.entity';
 
 registerEnumType(Result, {
   name: 'Result',
@@ -59,8 +60,8 @@ export class Results {
   @Field(() => User)
   user: User;
 
-  @Field(() => License)
-  license: License;
+  @Field(() => Licenseslave)
+  license: Licenseslave;
 
   @Field(() => Project)
   project: Project;

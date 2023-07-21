@@ -155,6 +155,22 @@ type Project {
   deletedAt: DateTime
 }
 
+type Licenseslave {
+  id: Int!
+  licenseTypeId: Int!
+  userId: Int!
+  paymentStatus: Status!
+  licenseValidity: DateTime!
+  paymentReference: String!
+  paymentAmount: Int!
+  status: Status!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  user: User!
+  licenseType: License!
+}
+
 type Results {
   id: Int!
   userId: Int!
@@ -172,7 +188,7 @@ type Results {
   updatedAt: DateTime!
   deletedAt: DateTime
   user: User!
-  license: License!
+  license: Licenseslave!
   project: Project!
   assesement: Answer!
 }
@@ -207,22 +223,6 @@ type Answer {
   updatedAt: DateTime!
   deletedAt: DateTime
   assesment: Results!
-}
-
-type Licenseslave {
-  id: Int!
-  licenseTypeId: Int!
-  userId: Int!
-  paymentStatus: Status!
-  licenseValidity: DateTime!
-  paymentReference: String!
-  paymentAmount: Int!
-  status: Status!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  deletedAt: DateTime
-  user: User!
-  licenseType: License!
 }
 
 type FeedbackComment {
@@ -295,6 +295,7 @@ type Query {
   getAllLicenseslave: [Licenseslave!]!
   getAllLicenseslaveById(id: Int!): Licenseslave!
   searchLicenseslave(searchLicenseslaveInput: SearchLicenseslaveInput!): [Licenseslave!]!
+  getUserLicenseSlave(id: Int!): Licenseslave!
   getAllFeedback: [Feedback!]!
   getAllFeedbackById(id: Int!): Feedback!
 }
@@ -355,6 +356,7 @@ type Mutation {
   deletePrincipleById(updatePrincipleInput: UpdatePrincipleInput!): Principle!
   updateUserById(updateUserInput: UpdateUserInput!): User!
   deleteUserById(updateUserInput: UpdateUserInput!): User!
+  verifyUser(mail: String!): User!
   createCompany(createCompanyInput: CreateCompanyInput!): Company!
   updateCompanyById(updateCompanyInput: UpdateCompanyInput!): Company!
   deleteCompanyById(updateCompanyInput: UpdateCompanyInput!): Company!
@@ -367,6 +369,7 @@ type Mutation {
   createResults(createAnswerInput: CreateAnswerInput!, createResultInput: CreateResultInput!): Results!
   updateResults(updateAnswerInput: UpdateAnswerInput!, updateResultInput: UpdateResultInput!): Results!
   publicCertificate(updateResultInput: UpdateResultInput!): Results!
+  updateResultStatus(updateResultInput: UpdateResultInput!): Results!
   createCompliance(createComplianceInput: CreateComplianceInput!): Compliance!
   updateComplianceById(updateComplianceInput: UpdateComplianceInput!): Compliance!
   deleteComplianceById(updateComplianceInput: UpdateComplianceInput!): Compliance!
@@ -564,6 +567,7 @@ input UpdateResultInput {
   certificatePrivacy: Status
   status: Status
   id: Int
+  adminComments: String
 }
 
 input CreateComplianceInput {

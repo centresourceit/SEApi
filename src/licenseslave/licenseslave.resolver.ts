@@ -30,6 +30,11 @@ export class LicenseslaveResolver {
     return this.licenseslaveService.searchLicenseslave(searchLicenseslaveInput);
   }
 
+  @Query(() => Licenseslave)
+  getUserLicenseSlave(@Args('id', { type: () => Int }) id: number) {
+    return this.licenseslaveService.getUserLicenseSlave(id);
+  }
+
   @Mutation(() => Licenseslave)
   createLicenseSlave(
     @Args('createLicenseslaveInput')

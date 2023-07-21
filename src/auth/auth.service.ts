@@ -3,8 +3,8 @@ import { user } from '@prisma/client';
 import { PrismaService } from 'prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { jwtSecret } from 'src/utils/contents';
-
+import { jwtSecret, sendgridapi } from 'src/utils/contents';
+import sgMail from '@sendgrid/mail';
 @Injectable()
 export class AuthService {
   constructor(
@@ -24,6 +24,7 @@ export class AuthService {
         email: email,
         password: hashedPassword,
         name: email.split('@')[0],
+        status: 'INACTIVE',
       },
     });
 
@@ -85,5 +86,24 @@ export class AuthService {
     return this.jwt.signAsync(payload, {
       secret: jwtSecret,
     });
+  }
+
+  async sendMail(mail: string) {
+    sgMail.setApiKey(sendgridapi);
+    const msg = {
+      to: mail, // Change to your recipient
+      from: 'zexalearn@exampl.com', // Change to your verified sender
+      subject: 'Verification Mail',
+      // text: 'and easy to do anywhere, even with Node.js',
+      html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+    };
+    sgMail
+      .send(msg)
+      .then(() => {
+        console.log('Email sent');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 }

@@ -44,6 +44,43 @@ export class LicenseslaveService {
     return slave;
   }
 
+  async getUserLicenseSlave(id: number) {
+    const slave = await this.prisma.user_license_slave.findFirst({
+      where: { userId: id },
+      include: { licenseType: true, assesement_result: true, user: true },
+      distinct: ['createdAt'],
+    });
+    if (!slave)
+      throw new BadRequestException(
+        'There are no licanse slave for this user.',
+      );
+    if (slave.licenseType.licenseType == 'FREE') return slave;
+    if (new Date(slave.licenseValidity) > new Date()) return slave;
+
+    const freeslave = await this.prisma.user_license_slave.findFirst({
+      where: { userId: id, licenseType: { licenseType: 'FREE' } },
+      include: { licenseType: true, assesement_result: true, user: true },
+      distinct: ['createdAt'],
+    });
+    if (freeslave) return freeslave;
+    const createfreeslave = await this.prisma.user_licenses_master.findFirst({
+      where: { licenseType: 'FREE' },
+    });
+    if (!createfreeslave)
+      throw new BadRequestException('There is no free License in project.');
+
+    const createfreelicense = await this.createLicenseSlave({
+      licenseValidity: new Date(),
+      paymentAmount: 0,
+      paymentReference: '',
+      paymentStatus: 'ACTIVE',
+      status: 'ACTIVE',
+      userId: id,
+      licenseTypeId: createfreeslave.id,
+    });
+    return createfreelicense;
+  }
+
   async createLicenseSlave(license: CreateLicenseslaveInput) {
     const dataToCreate: any = {};
 

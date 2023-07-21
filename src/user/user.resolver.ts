@@ -34,4 +34,9 @@ export class UserResolver {
   deleteUserById(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     return this.userService.deleteUserById(updateUserInput);
   }
+
+  @Mutation(() => User)
+  verifyUser(@Args('mail', { type: () => String }) mail: string) {
+    return this.userService.verifyUser(mail);
+  }
 }

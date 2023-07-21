@@ -42,6 +42,10 @@ export class UpdateResultInput extends PartialType(CreateResultInput) {
   certificatedId: string;
 
   @IsOptional()
+  @Field(() => String, { nullable: true })
+  adminComments: string;
+
+  @IsOptional()
   @Field(() => Status, { nullable: true })
   certificatePrivacy: Status;
 

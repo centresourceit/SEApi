@@ -75,4 +75,11 @@ export class AnswersResolver {
   ) {
     return this.answersService.publicCertificate(updateResultInput);
   }
+
+  @Mutation(() => Results)
+  updateResultStatus(
+    @Args('updateResultInput') updateResultInput: UpdateResultInput,
+  ) {
+    return this.answersService.updateResultStatus(updateResultInput);
+  }
 }
