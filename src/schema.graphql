@@ -52,6 +52,8 @@ type License {
   licenseType: LicenseType!
   paymentAmount: Int!
   name: String!
+  licenseValidTill: Int
+  description: String
   discountAmount: String!
   questionAllowed: Int!
   projectPerLicense: Int
@@ -269,8 +271,6 @@ enum ExperienceRate {
 type Query {
   index: String!
   signin(loginUserInput: LoginUserInput!): Auth!
-  signout: String!
-  getdata: String!
   getAllQuestion: [QuestionBank!]!
   getQuestionById(id: Int!): QuestionBank!
   getQuestionHistory(id: Int!): [QuestionBank!]!
@@ -348,6 +348,7 @@ input SearchLicenseslaveInput {
 
 type Mutation {
   signup(signUpUserInput: SignUpUserInput!): Auth!
+  changepassword(changePasswordInput: ChangePasswordInput!): Boolean!
   createQuestion(createQuestionbankInput: CreateQuestionbankInput!): QuestionBank!
   updateQuestionById(updateQuestionbankInput: UpdateQuestionbankInput!): QuestionBank!
   deleteQuestionById(updateQuestionbankInput: UpdateQuestionbankInput!): QuestionBank!
@@ -382,6 +383,13 @@ type Mutation {
 input SignUpUserInput {
   email: String!
   password: String!
+}
+
+input ChangePasswordInput {
+  id: Int!
+  oldpassword: String!
+  newpassword: String!
+  repassword: String!
 }
 
 input CreateQuestionbankInput {
@@ -503,6 +511,8 @@ input CreateLicenseInput {
   questionAllowed: Int!
   projectPerLicense: Int!
   discountValidTill: DateTime!
+  licenseValidTill: Int!
+  description: String!
 }
 
 input UpdateLicenseInput {
@@ -513,6 +523,8 @@ input UpdateLicenseInput {
   questionAllowed: Int
   projectPerLicense: Int
   discountValidTill: DateTime
+  licenseValidTill: Int
+  description: String
   id: Int!
   status: Status
   deletedAt: DateTime

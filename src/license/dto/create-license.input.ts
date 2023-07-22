@@ -31,4 +31,12 @@ export class CreateLicenseInput {
   @IsNotEmpty()
   @Field(() => Date)
   discountValidTill: Date;
+
+  @IsNotEmpty()
+  @Field(() => Int)
+  licenseValidTill: number;
+
+  @IsNotEmpty()
+  @Field(() => String)
+  description: string;
 }

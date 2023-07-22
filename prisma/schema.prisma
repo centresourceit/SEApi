@@ -100,6 +100,8 @@ model user_licenses_master {
   id                 Int                  @id @default(autoincrement())
   licenseType        LicenseType          @default(FREE)
   name               String
+  description        String?
+  licenseValidTill   Int?
   paymentAmount      Int                  @default(0)
   discountAmount     Int                  @default(0)
   discountValidTill  DateTime?

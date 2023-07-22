@@ -5,6 +5,7 @@ import { LoginUserInput } from './dto/loginuser.input';
 import { SignUpUserInput } from './dto/signup.input';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from './auth.guard';
+import { ChangePasswordInput } from './dto/changepassword.input';
 
 @Resolver(() => Auth)
 export class AuthResolver {
@@ -33,23 +34,11 @@ export class AuthResolver {
       signUpUserInput.password,
     );
   }
-  // @Mutation((returns) => Auth)
-  // signup(
-  //   @Args({ name: 'email', type: () => String }) email: string,
-  //   @Args({ name: 'password', type: () => String }) password: string,
-  // ) {
-  //   return this.authService.signup(email, password);
-  // }
 
-  @Query((returns) => String)
-  @UseGuards(AuthGuard)
-  signout(@Context('user') user: any) {
-    return 'user signout sucessfull';
-  }
-
-  @Query((returns) => String)
-  @UseGuards(AuthGuard)
-  getdata(@Context('user') user: any) {
-    return 'user signout sucessfull';
+  @Mutation(() => Boolean)
+  changepassword(
+    @Args('changePasswordInput') changePasswordInput: ChangePasswordInput,
+  ) {
+    return this.authService.changepassword(changePasswordInput);
   }
 }

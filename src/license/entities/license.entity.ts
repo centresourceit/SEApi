@@ -19,6 +19,12 @@ export class License {
   @Field(() => String)
   name: string;
 
+  @Field(() => Int, { nullable: true })
+  licenseValidTill: number;
+
+  @Field(() => String, { nullable: true })
+  description: string;
+
   @Field(() => String)
   discountAmount: string;
 

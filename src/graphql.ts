@@ -107,6 +107,13 @@ export interface SignUpUserInput {
     password: string;
 }
 
+export interface ChangePasswordInput {
+    id: number;
+    oldpassword: string;
+    newpassword: string;
+    repassword: string;
+}
+
 export interface CreateQuestionbankInput {
     principleId: number;
     complianceId: number;
@@ -225,6 +232,8 @@ export interface CreateLicenseInput {
     questionAllowed: number;
     projectPerLicense: number;
     discountValidTill: DateTime;
+    licenseValidTill: number;
+    description: string;
 }
 
 export interface UpdateLicenseInput {
@@ -235,6 +244,8 @@ export interface UpdateLicenseInput {
     questionAllowed?: Nullable<number>;
     projectPerLicense?: Nullable<number>;
     discountValidTill?: Nullable<DateTime>;
+    licenseValidTill?: Nullable<number>;
+    description?: Nullable<string>;
     id: number;
     status?: Nullable<Status>;
     deletedAt?: Nullable<DateTime>;
@@ -386,6 +397,8 @@ export interface License {
     licenseType: LicenseType;
     paymentAmount: number;
     name: string;
+    licenseValidTill?: Nullable<number>;
+    description?: Nullable<string>;
     discountAmount: string;
     questionAllowed: number;
     projectPerLicense?: Nullable<number>;
@@ -566,8 +579,6 @@ export interface Feedback {
 export interface IQuery {
     index(): string | Promise<string>;
     signin(loginUserInput: LoginUserInput): Auth | Promise<Auth>;
-    signout(): string | Promise<string>;
-    getdata(): string | Promise<string>;
     getAllQuestion(): QuestionBank[] | Promise<QuestionBank[]>;
     getQuestionById(id: number): QuestionBank | Promise<QuestionBank>;
     getQuestionHistory(id: number): QuestionBank[] | Promise<QuestionBank[]>;
@@ -599,6 +610,7 @@ export interface IQuery {
 
 export interface IMutation {
     signup(signUpUserInput: SignUpUserInput): Auth | Promise<Auth>;
+    changepassword(changePasswordInput: ChangePasswordInput): boolean | Promise<boolean>;
     createQuestion(createQuestionbankInput: CreateQuestionbankInput): QuestionBank | Promise<QuestionBank>;
     updateQuestionById(updateQuestionbankInput: UpdateQuestionbankInput): QuestionBank | Promise<QuestionBank>;
     deleteQuestionById(updateQuestionbankInput: UpdateQuestionbankInput): QuestionBank | Promise<QuestionBank>;
