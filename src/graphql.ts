@@ -611,6 +611,7 @@ export interface IQuery {
 export interface IMutation {
     signup(signUpUserInput: SignUpUserInput): Auth | Promise<Auth>;
     changepassword(changePasswordInput: ChangePasswordInput): boolean | Promise<boolean>;
+    forgetpassword(mail: string): boolean | Promise<boolean>;
     createQuestion(createQuestionbankInput: CreateQuestionbankInput): QuestionBank | Promise<QuestionBank>;
     updateQuestionById(updateQuestionbankInput: UpdateQuestionbankInput): QuestionBank | Promise<QuestionBank>;
     deleteQuestionById(updateQuestionbankInput: UpdateQuestionbankInput): QuestionBank | Promise<QuestionBank>;

@@ -41,4 +41,9 @@ export class AuthResolver {
   ) {
     return this.authService.changepassword(changePasswordInput);
   }
+
+  @Mutation(() => Boolean)
+  forgetpassword(@Args('mail', { type: () => String }) mail: string) {
+    return this.authService.forgetpassword(mail);
+  }
 }

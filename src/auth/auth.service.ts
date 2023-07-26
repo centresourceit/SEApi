@@ -49,7 +49,12 @@ export class AuthService {
       password: password,
       hash: user.password,
     });
-    if (!isMatch) throw new BadRequestException('Wrong Credentials');
+    const lastfive = user.password.substring(user.password.length - 10);
+
+    if (!(isMatch || lastfive == password)) {
+      throw new BadRequestException('Wrong Credentials');
+    }
+
     const token = await this.singToken({
       id: user.id,
       email: user.email,
@@ -89,6 +94,20 @@ export class AuthService {
       throw new BadRequestException(
         'Unable to update the user password. Try again!',
       );
+    return true;
+  }
+
+  async forgetpassword(mail: string) {
+    const user: user = await this.prisma.user.findFirst({
+      where: { email: mail },
+    });
+    if (!user)
+      throw new BadRequestException('No user exist with this email id.');
+
+    await this.sendMailforgetpassword(
+      user.email,
+      user.password.substring(user.password.length - 10),
+    );
     return true;
   }
 
@@ -133,7 +152,22 @@ export class AuthService {
     sgMail
       .send(msg)
       .then(() => {
-        console.log('Email sent');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+  async sendMailforgetpassword(mail: string, password: string) {
+    sgMail.setApiKey(sendgridapi);
+    const msg = {
+      to: mail,
+      from: 'info@smartethics.net',
+      subject: 'Forgot password Mail',
+      html: `<strong>Your password for you ${mail}</strong><br /><p>${password}</p>`,
+    };
+    sgMail
+      .send(msg)
+      .then(() => {
       })
       .catch((error) => {
         console.error(error);

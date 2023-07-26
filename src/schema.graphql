@@ -349,6 +349,7 @@ input SearchLicenseslaveInput {
 type Mutation {
   signup(signUpUserInput: SignUpUserInput!): Auth!
   changepassword(changePasswordInput: ChangePasswordInput!): Boolean!
+  forgetpassword(mail: String!): Boolean!
   createQuestion(createQuestionbankInput: CreateQuestionbankInput!): QuestionBank!
   updateQuestionById(updateQuestionbankInput: UpdateQuestionbankInput!): QuestionBank!
   deleteQuestionById(updateQuestionbankInput: UpdateQuestionbankInput!): QuestionBank!
