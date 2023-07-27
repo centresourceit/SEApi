@@ -350,6 +350,8 @@ type Mutation {
   signup(signUpUserInput: SignUpUserInput!): Auth!
   changepassword(changePasswordInput: ChangePasswordInput!): Boolean!
   forgetpassword(mail: String!): Boolean!
+  contactUs(contactUserInput: ContactUserInput!): Boolean!
+  resendmail(mail: String!, name: String!): Boolean!
   createQuestion(createQuestionbankInput: CreateQuestionbankInput!): QuestionBank!
   updateQuestionById(updateQuestionbankInput: UpdateQuestionbankInput!): QuestionBank!
   deleteQuestionById(updateQuestionbankInput: UpdateQuestionbankInput!): QuestionBank!
@@ -391,6 +393,12 @@ input ChangePasswordInput {
   oldpassword: String!
   newpassword: String!
   repassword: String!
+}
+
+input ContactUserInput {
+  email: String!
+  name: String!
+  text: String!
 }
 
 input CreateQuestionbankInput {

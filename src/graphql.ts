@@ -114,6 +114,12 @@ export interface ChangePasswordInput {
     repassword: string;
 }
 
+export interface ContactUserInput {
+    email: string;
+    name: string;
+    text: string;
+}
+
 export interface CreateQuestionbankInput {
     principleId: number;
     complianceId: number;
@@ -612,6 +618,8 @@ export interface IMutation {
     signup(signUpUserInput: SignUpUserInput): Auth | Promise<Auth>;
     changepassword(changePasswordInput: ChangePasswordInput): boolean | Promise<boolean>;
     forgetpassword(mail: string): boolean | Promise<boolean>;
+    contactUs(contactUserInput: ContactUserInput): boolean | Promise<boolean>;
+    resendmail(mail: string, name: string): boolean | Promise<boolean>;
     createQuestion(createQuestionbankInput: CreateQuestionbankInput): QuestionBank | Promise<QuestionBank>;
     updateQuestionById(updateQuestionbankInput: UpdateQuestionbankInput): QuestionBank | Promise<QuestionBank>;
     deleteQuestionById(updateQuestionbankInput: UpdateQuestionbankInput): QuestionBank | Promise<QuestionBank>;

@@ -6,6 +6,7 @@ import { JwtService } from '@nestjs/jwt';
 import { jwtSecret, sendgridapi, websitelink } from 'src/utils/contents';
 import sgMail from '@sendgrid/mail';
 import { ChangePasswordInput } from './dto/changepassword.input';
+import { ContactUserInput } from './dto/contact.input';
 @Injectable()
 export class AuthService {
   constructor(
@@ -34,7 +35,7 @@ export class AuthService {
       email: user.email,
       role: user.role,
     });
-    this.sendMail(user.email);
+    this.sendMail(user.email, user.email.toString().split('@')[0]);
     if (!user) return { user: user };
     return { ...user, token };
   }
@@ -141,21 +142,23 @@ export class AuthService {
     });
   }
 
-  async sendMail(mail: string) {
+  async sendMail(mail: string, name: string) {
     sgMail.setApiKey(sendgridapi);
     const msg = {
       to: mail,
       from: 'info@smartethics.net',
-      subject: 'Verification Mail',
-      html: `<strong>Vertification Link</strong><br /><a href="${websitelink}verifyuser/${mail}">Click Here</a>`,
+      subject: 'Your Smart Ethics Email Verification Link',
+      html: `<h3>Hello ${name}</h3><br /><strong> Welcome to Smart Ethics.</strong> <br /><p>Please click on the link to verify your email id</p> <br /><br /><a href="${websitelink}verifyuser/${mail}">Click Here</a><br/><p>If you didn't request to receive this activation mail, please contact the Smart Ethics team</p><br /><br /><p>Your Smart Ethics Team</p>`,
     };
     sgMail
       .send(msg)
       .then(() => {
+        return true;
       })
       .catch((error) => {
-        console.error(error);
+        throw new BadRequestException(error);
       });
+    return false;
   }
   async sendMailforgetpassword(mail: string, password: string) {
     sgMail.setApiKey(sendgridapi);
@@ -167,10 +170,28 @@ export class AuthService {
     };
     sgMail
       .send(msg)
+      .then(() => {})
+      .catch((error) => {
+        throw new BadRequestException(error);
+      });
+  }
+
+  async contactUs(contactUserInput: ContactUserInput) {
+    sgMail.setApiKey(sendgridapi);
+    const msg = {
+      to: 'contact@smartethics.net',
+      from: 'info@smartethics.net',
+      subject: 'Contact Us',
+      html: `<h3>From ${contactUserInput.name}</h3><br /><strong>user E-Mail ${contactUserInput.email}</strong><br/><br/><br/><p>${contactUserInput.text}</p><br />`,
+    };
+    sgMail
+      .send(msg)
       .then(() => {
+        return true;
       })
       .catch((error) => {
-        console.error(error);
+        throw new BadRequestException(error);
       });
+    return false;
   }
 }

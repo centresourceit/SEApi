@@ -6,6 +6,7 @@ import { SignUpUserInput } from './dto/signup.input';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from './auth.guard';
 import { ChangePasswordInput } from './dto/changepassword.input';
+import { ContactUserInput } from './dto/contact.input';
 
 @Resolver(() => Auth)
 export class AuthResolver {
@@ -18,14 +19,6 @@ export class AuthResolver {
       loginUserInput.password,
     );
   }
-
-  // @Query((returns) => Auth)
-  // signin(
-  //   @Args({ name: 'email', type: () => String }) email: string,
-  //   @Args({ name: 'password', type: () => String }) password: string,
-  // ) {
-  //   return this.authService.signin(email, password);
-  // }
 
   @Mutation((returns) => Auth)
   signup(@Args('signUpUserInput') signUpUserInput: SignUpUserInput) {
@@ -45,5 +38,18 @@ export class AuthResolver {
   @Mutation(() => Boolean)
   forgetpassword(@Args('mail', { type: () => String }) mail: string) {
     return this.authService.forgetpassword(mail);
+  }
+
+  @Mutation(() => Boolean)
+  contactUs(@Args('contactUserInput') contactUserInput: ContactUserInput) {
+    return this.authService.contactUs(contactUserInput);
+  }
+
+  @Mutation(() => Boolean)
+  resendmail(
+    @Args('mail', { type: () => String }) mail: string,
+    @Args('name', { type: () => String }) name: string,
+  ) {
+    return this.authService.sendMail(mail, name);
   }
 }

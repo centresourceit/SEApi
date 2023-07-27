@@ -9,7 +9,7 @@ import { Role } from '@prisma/client';
 import { Auth } from 'src/auth/entities/auth.entity';
 import { SignUpUserInput } from 'src/graphql';
 
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 @Resolver(() => User)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
