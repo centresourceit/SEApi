@@ -14,7 +14,7 @@ import { SignUpUserInput } from 'src/graphql';
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
-  @UseGuards(new RoleGuard(Role.ADMIN))
+  // @UseGuards(new RoleGuard(Role.ADMIN))
   @Query(() => [User])
   getAllUser() {
     return this.userService.getAllUser();
