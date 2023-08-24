@@ -28,6 +28,7 @@ enum Role {
 enum Status {
   ACTIVE
   INACTIVE
+  ADMINACTIVE
 }
 
 """

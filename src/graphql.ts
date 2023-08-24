@@ -16,7 +16,8 @@ export enum Role {
 
 export enum Status {
     ACTIVE = "ACTIVE",
-    INACTIVE = "INACTIVE"
+    INACTIVE = "INACTIVE",
+    ADMINACTIVE = "ADMINACTIVE"
 }
 
 export enum LicenseType {
