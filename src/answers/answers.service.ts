@@ -164,7 +164,7 @@ export class AnswersService {
     });
 
     const answer = await this.prisma.assesement_result_revised.update({
-      where: { id: result.id },
+      where: { id: result.assesementId },
       data: {
         result: updateAnswerInput.answers.map((answer) => ({
           id: answer.id,
@@ -229,5 +229,5 @@ export class AnswersService {
       data: dataToUpdate,
     });
     return result;
-  } 
+  }
 }
