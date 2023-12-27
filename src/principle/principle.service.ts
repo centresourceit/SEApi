@@ -14,7 +14,14 @@ export class PrincipleService {
     const principles = await this.prisma.principle.findMany({
       include: {
         question_bank: {
-          include: { complince: true },
+          include: {
+            complince: true,
+            questionPlan: {
+              include: {
+                user_license_slave: { include: { licenseType: true } },
+              },
+            },
+          },
           where: { deletedAt: null },
           orderBy: [{ questionRefId: 'asc' }, { version: 'desc' }],
           distinct: ['questionRefId'],

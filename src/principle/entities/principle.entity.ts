@@ -1,6 +1,9 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Status } from '@prisma/client';
-import { QuestionAns, QuestionBank } from 'src/questionbank/entities/questionbank.entity';
+import {
+  QuestionAns,
+  QuestionBank,
+} from 'src/questionbank/entities/questionbank.entity';
 
 @ObjectType()
 export class Principle {
